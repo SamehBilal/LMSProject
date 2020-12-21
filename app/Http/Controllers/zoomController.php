@@ -43,9 +43,15 @@ class zoomController extends Controller
 
     public function meetingsList(Request $request)
     {
+        if(auth()->user()->hasRole('admin|Super Admin')){
+            $role = 1;
+        }else{
+            $role = 0;
+        }
+
         $user = auth()->user();
         $meetings = Zoom::user()->find('me')->meetings;
-        return view('meetingList', compact('meetings','user'));
+        return view('meetingList', compact('meetings','user','role'));
     }
 
     public function deleteMeeting($id)

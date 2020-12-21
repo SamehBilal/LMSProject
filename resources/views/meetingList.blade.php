@@ -51,11 +51,12 @@
                                     <td class="column4" style="text-align: center !important">{{$item->duration}}</td>
                                     <td class="column6">
                                         <div>
-                                            <a href="/meeting?nickname={{$user->name}}&meetingId={{$item->id}}&password={{substr($item->join_url, strpos($item->join_url, '=') + 1)}}&role={{$user->role}}" target="_blank">Join</a>
-											@if ($user->role == 1)
-											/
-											<a style="color: rgb(206, 114, 114) !important" href="/delete/{{$item->id}}">Delete</a>
-											@endif
+                                            <a href="/meeting?nickname={{$user->name}}&meetingId={{$item->id}}&password={{substr($item->join_url, strpos($item->join_url, '=') + 1)}}&role={{$role}}" target="_blank">Join</a>
+											@can('delete meeting')
+												/
+												<a style="color: rgb(206, 114, 114) !important" href="/delete/{{$item->id}}">Delete</a>
+											
+											@endcan
                                         </div>
                                     </td>
                                 </tr>

@@ -13,22 +13,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('create_meeting');
-});
-Route::post('/', 'zoomController@createMeeting');
+
 
 
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/meetings-list', 'zoomController@meetingsList');
-Route::get('/delete/{id}', 'zoomController@deleteMeeting');
+    Route::get('/meeting', function () {
+        return view('startMeeting');
+    });
+    Route::group(['prefix' => 'admin', 'as' => 'admin' . '.', 'middleware'=>['role:admin|Super Admin']], function () {
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        });        
+        Route::resource('admins', 'AdminController');
+        Route::resource('students', 'StudentController');
+        Route::resource('parents', 'ParentController');
+        Route::resource('staff', 'StaffController');
+        Route::resource('teachers', 'TeacherController');
 
-Route::get('/meeting', function () {
-    return view('startMeeting');
-});
+        Route::resource('roles', 'RoleController');
+
+
+        Route::get('/delete/{id}', 'zoomController@deleteMeeting');
+        Route::get('/create_meeting', function () {
+            return view('create_meeting');
+        });
+        Route::post('/', 'zoomController@createMeeting');
+    });
+
+
 });
