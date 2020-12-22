@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -29,9 +29,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereNotIn('name', ['admin', 'Super Admin'])->get();
-        $permissions =  Permission::all();
-        return view('admin.admins.create', compact('roles','permissions'));
+        return view('admin.admins.create');
     }
 
     /**
@@ -42,19 +40,25 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, User::rules());
 
-        $data['name'] = $request->name;
-        $data['email'] = $request->email;
-        $data['password'] = $request->password;
-        $data['password'] = bcrypt(request('password'));
-        
-        
-        $user = User::create($data);
-        $user->syncPermissions($request->permissions);
-        $user->syncRoles($request->roles);
+        $data = $request->all();
+        $data['password'] = Hash::make($data['password']);
+        $user = User::create([
+            'username' => $data['username'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'fullname' => $data['fullname'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'other_email' => $data['other_email'],
+            'phone' => $data['phone'],
+            'gender' => $data['gender'],
+            'avatar' => $request->avatar,
+        ]);
+        $user->assignRole('admin');
 
-
-        return back()->withSuccess(trans('app.success_store'));
+        return redirect()->route('admin.admins.index');
     }
 
     /**
@@ -76,6 +80,8 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
+        $user = User::find($id);
+        return view('admin.admins.edit', compact('user'));
 
     }
 
@@ -88,6 +94,24 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, User::rules($update = true, $id));
+
+        $data = $request->all();
+        $data['password'] = Hash::make($data['password']);
+        $user = User::where('id',$id)->update([
+            'username' => $data['username'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'fullname' => $data['fullname'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'other_email' => $data['other_email'],
+            'phone' => $data['phone'],
+            'gender' => $data['gender'],
+            'avatar' => $request->avatar,
+        ]);
+
+        return redirect()->route('admin.admins.index');
 
     }
 
@@ -106,6 +130,6 @@ class AdminController extends Controller
         User::destroy($id);
         
 
-        return back()->withSuccess(trans('app.success_destroy'));
+        return back();
     }
 }

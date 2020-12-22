@@ -199,7 +199,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="charts-morris-js.html">All Staff</a></li>                                
+                                <li><a href="{{route('admin.staff.index')}}">All Staff</a></li>                                
                             </ul>
                         </li>
             

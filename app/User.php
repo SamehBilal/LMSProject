@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'fullname', 'email', 'password','username','firstname','lastname','other_email','phone','gender','avatar'
     ];
 
     /**
@@ -38,11 +38,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function staff()
+    {
+        return $this->hasOne(Staff::class);
+    }
+
     public static function rules($update = false, $id = null)
     {
         $common = [
-            'email'    => "required|email|unique:users,email,$id",
-            'password' => 'nullable|confirmed',
+            'fullname'      => "required|max:40",  
+            'email'         => "required|email|unique:users,email,$id|unique:users,email,$id",
+            'password'      => 'nullable|confirmed',
+            'username'      => "required|unique:users,username,$id",
+            'firstname'     => "required|min:3|max:20",
+            'lastname'      => "required|min:3|max:20",
+            'other_email'   => "nullable|email|unique:users,email,$id|unique:users,other_email,$id",
+            'phone'         => "nullable|numeric",
+            'gender'        => "nullable",
+
         ];
 
         if ($update) {
@@ -51,7 +65,7 @@ class User extends Authenticatable
 
         return array_merge($common, [
             'email'    => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:8',
         ]);
     }
 }

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Staff;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class StaffController extends Controller
 {
@@ -13,11 +18,8 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $items = User::role('admin')->latest('updated_at')->get();
-
-
-
-        return view('admin.users.index', compact('items'));
+        $items = User::role('staff')->latest('updated_at')->get();
+        return view('admin.staff.index', compact('items'));
     }
 
     /**
@@ -27,10 +29,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereNotIn('name', ['admin', 'Super Admin'])->get();
-        $permissions =  Permission::all();
-        dd($permissions);
-        return view('admin.users.create');
+        return view('admin.staff.create');
     }
 
     /**
@@ -42,13 +41,37 @@ class StaffController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, User::rules());
+        $this->validate($request, Staff::rules());
 
         $data = $request->all();
-        $data['password'] = bcrypt(request('password'));
+        $data['password'] = Hash::make($data['password']);
+        $user = User::create([
+            'username' => $data['username'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'fullname' => $data['fullname'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'other_email' => $data['other_email'],
+            'phone' => $data['phone'],
+            'gender' => $data['gender'],
+            'avatar' => $request->avatar,
+        ]);
 
-        User::create($data);
+        Staff::create([
+            'user_id' => $user->id,
+            'position' => $data['position'],
+            'address' => $data['address'],
+            'major' => $data['major'],
+            'university' => $data['university'],
+            'graduation_year' => $data['graduation_year'],
+            'date_of_birth' => $data['date_of_birth'],
+            'cv' => $request->cv,
+            'salary' => $data['salary'],
+        ]);
+        $user->assignRole('staff');
 
-        return back()->withSuccess(trans('app.success_store'));
+        return redirect()->route('admin.staff.index');
     }
 
     /**
@@ -70,9 +93,9 @@ class StaffController extends Controller
      */
     public function edit($id)
     {
-        $item = User::findOrFail($id);
+        $user = User::where('id',$id)->with('staff')->first();
+        return view('admin.staff.edit', compact('user'));
 
-        return view('admin.users.edit', compact('item'));
     }
 
     /**
@@ -84,19 +107,39 @@ class StaffController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, User::rules(true, $id));
+        $this->validate($request, User::rules($update = true, $id));
+        $this->validate($request, Staff::rules($update = true));
 
-        $item = User::findOrFail($id);
 
         $data = $request->all();
+        $data['password'] = Hash::make($data['password']);
+        $user = User::where('id',$id)->update([
+            'username' => $data['username'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'fullname' => $data['fullname'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'other_email' => $data['other_email'],
+            'phone' => $data['phone'],
+            'gender' => $data['gender'],
+            'avatar' => $request->avatar,
+        ]);
 
-        if (request()->has('password')) {
-            $data['password'] = bcrypt(request('password'));
-        }
+        Staff::where('user_id',$id)->update([
+            'user_id' => $id,
+            'position' => $data['position'],
+            'address' => $data['address'],
+            'major' => $data['major'],
+            'university' => $data['university'],
+            'graduation_year' => $data['graduation_year'],
+            'date_of_birth' => $data['date_of_birth'],
+            'cv' => $request->cv,
+            'salary' => $data['salary'],
+        ]);
 
-        $item->update($data);
+        return redirect()->route('admin.staff.index');
 
-        return redirect()->route(ADMIN . '.users.index')->withSuccess(trans('app.success_update'));
     }
 
     /**
@@ -107,8 +150,16 @@ class StaffController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $staff = Staff::where('user_id',$id)->first();
+        Staff::destroy($staff->id);
+        $user = User::find($id);
+        $user->syncPermissions();
+        $user->syncRoles();
 
-        return back()->withSuccess(trans('app.success_destroy'));
+        User::destroy($id);
+        
+
+        return back();
     }
+
 }

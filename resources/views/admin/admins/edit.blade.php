@@ -68,15 +68,16 @@
 			<div class="col-sm-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Create New Admin</h3>
+						<h3 class="panel-title">Edit Admin</h3>
 					</div>
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.admins.store') }}" enctype="multipart/form-data">
-						@csrf
+					<form method="POST" action="{{ route('admin.admins.update', $user->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
 						<div class="panel-body">
-							@include('admin.components.createuser')							
+							@include('admin.components.edituser')							
 						</div>
 						<div class="panel-footer text-right">
 							<button class="btn btn-success" type="submit">Submit</button>
