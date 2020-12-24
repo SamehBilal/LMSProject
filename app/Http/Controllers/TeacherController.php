@@ -131,16 +131,16 @@ class TeacherController extends Controller
      */
     public function destroy($id)
     {
-        $staff = Staff::where('user_id',$id)->first();
-        Staff::destroy($staff->id);
-        $user = User::find($id);
-        $user->syncPermissions();
-        $user->syncRoles();
-
         User::destroy($id);
         
 
         return back();
+    }
+
+    public function viewdeleted()
+    {
+        $items = User::onlyTrashed()->role('teacher')->latest('updated_at')->get();
+        return view('manage_users.teachers.deleted', compact('items'));
     }
 
 }

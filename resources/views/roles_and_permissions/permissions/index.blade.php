@@ -43,7 +43,7 @@
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.roles.create')}}"><i class="demo-pli-plus"></i> Add Role</a>
+                <a class="btn btn-primary" href="{{route('admin.permissions.create')}}"><i class="demo-pli-plus"></i> Add Permission</a>
             </div>
         
             <div class="panel-body">
@@ -60,14 +60,14 @@
                             <tr>
                                 <td>{{$item->name}}</td>
                                 <td>
-                                    @foreach ($item->permissions as $permission)
-                                        <li>{{$permission->name}}</li>
-                                    @endforeach
+                                @foreach ($item->roles as $role)
+                                    <li>{{$role->name}}</li>
+                                @endforeach
                                 </td>
                                 <td>
-                                    @foreach ($item->users as $user)
-                                        <li>{{$user->fullname}}</li>
-                                    @endforeach
+                                @foreach ($item->users as $user)
+                                    <li>{{$user->fullname}}</li>
+                                @endforeach
                                 </td>
                             </tr>                            
                         @endforeach

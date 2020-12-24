@@ -38,12 +38,12 @@
         <!--===================================================-->
         <div class="panel">
             <div class="panel-heading">
-                <h3 class="panel-title">Staff List</h3>
+                <h3 class="panel-title">Parents List</h3>
             </div>
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.parents.create')}}"><i class="demo-pli-plus"></i> Add Staff</a>
+                <a class="btn btn-primary" href="{{route('admin.parents.create')}}"><i class="demo-pli-plus"></i> Add Parent</a>
             </div>
         
             <div class="panel-body">

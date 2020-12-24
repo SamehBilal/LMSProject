@@ -68,7 +68,7 @@
 			<div class="col-sm-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Edit Admin</h3>
+						<h3 class="panel-title">Edit Parent</h3>
 					</div>
 		
 					<!--Block Styled Form -->
@@ -82,7 +82,7 @@
 								<div class="row">
 									<div class="col-sm-6">
 										<div class="form-group">
-											<label class="control-label">Position</label>
+											<label class="control-label">Students</label>
 											<select name="students[]" multiple class="form-control" required>
 												@foreach ($students as $student)
 													<option value="{{$student->id}}">{{$student->username}}</option>

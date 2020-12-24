@@ -17,7 +17,7 @@ class RoleController extends Controller
     public function index()
     {
         $items = Role::all();
-        return view('admin.roles.index', compact('items'));
+        return view('roles_and_permissions.roles.index', compact('items'));
     }
 
     /**
@@ -27,9 +27,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereNotIn('name', ['admin', 'Super Admin'])->get();
         $permissions =  Permission::all();
-        return view('admin.roles.create', compact('roles','permissions'));
+        return view('roles_and_permissions.roles.create', compact('permissions'));
     }
 
     /**

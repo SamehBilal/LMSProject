@@ -108,13 +108,17 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->syncPermissions();
-        $user->syncRoles();
+
 
         User::destroy($id);
         
 
         return back();
+    }
+
+    public function viewdeleted()
+    {
+        $items = User::onlyTrashed()->role('admin')->latest('updated_at')->get();
+        return view('manage_users.admins.deleted', compact('items'));
     }
 }

@@ -133,15 +133,15 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $student = Student::where('user_id',$id)->first();
-        Student::destroy($student->id);
-        $user = User::find($id);
-        $user->syncPermissions();
-        $user->syncRoles();
-
         User::destroy($id);
         
 
         return back();
+    }
+
+    public function viewdeleted()
+    {
+        $items = User::onlyTrashed()->role('student')->with('student')->latest('updated_at')->get();
+        return view('manage_users.students.deleted', compact('items'));
     }
 }

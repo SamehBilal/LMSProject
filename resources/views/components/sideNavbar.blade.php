@@ -122,7 +122,7 @@
                             <!--Submenu-->
                             <ul class="collapse">
                                 <li><a href="{{route('admin.roles.index')}}">Roles</a></li>
-                                <li><a href="layouts-offcanvas-navigation.html">Permissions</a></li>
+                                <li><a href="{{route('admin.permissions.index')}}">Permissions</a></li>
                             </ul>
                         </li>
             
@@ -153,6 +153,8 @@
                             <!--Submenu-->
                             <ul class="collapse">
                                 <li><a href="{{route('admin.students.index')}}">All Students</a></li>
+                                <li><a href="{{route('admin.students.deleted')}}">Deleted Admins</a></li>                                  
+
                                 
                             </ul>
                         </li>
@@ -167,7 +169,9 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.parents.index')}}">All Parents</a></li>                                
+                                <li><a href="{{route('admin.parents.index')}}">All Parents</a></li>
+                                <li><a href="{{route('admin.parents.deleted')}}">Deleted Admins</a></li>                                  
+                                
                             </ul>
                         </li>
             
@@ -182,6 +186,8 @@
                             <!--Submenu-->
                             <ul class="collapse">
                                 <li><a href="{{route('admin.teachers.index')}}">All Teachers</a></li>
+                                <li><a href="{{route('admin.teachers.deleted')}}">Deleted Admins</a></li>                                  
+
                             </ul>
                         </li>
             
@@ -195,7 +201,9 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.staff.index')}}">All Staff</a></li>                                
+                                <li><a href="{{route('admin.staff.index')}}">All Staff</a></li> 
+                                <li><a href="{{route('admin.staff.deleted')}}">Deleted Admins</a></li>                                  
+                               
                             </ul>
                         </li>
             
@@ -209,7 +217,8 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.admins.index')}}">All Admins</a></li>                                
+                                <li><a href="{{route('admin.admins.index')}}">All Admins</a></li>
+                                <li><a href="{{route('admin.admins.deleted')}}">Deleted Admins</a></li>                                  
                             </ul>
                         </li>            
                         <li class="list-divider"></li>

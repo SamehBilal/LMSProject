@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app_layout')
 @section('extra-header-scripts')
         <!--DataTables [ OPTIONAL ]-->
         <link href="{{asset('plugins/datatables/media/css/dataTables.bootstrap.css')}}" rel="stylesheet">
@@ -38,30 +38,31 @@
         <!--===================================================-->
         <div class="panel">
             <div class="panel-heading">
-                <h3 class="panel-title">Add Admin</h3>
+                <h3 class="panel-title">Deleted Staff List</h3>
             </div>
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.admins.create')}}"><i class="demo-pli-plus"></i> Add Admin</a>
             </div>
         
             <div class="panel-body">
                 <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
+                            <th>Full Name</th>
+                            <th>Position</th>
+                            <th>Salary</th>
                             <th>Roles</th>
-                            <th>Permissions</th>
+                            <th>Extra Permissions</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($items as $item)
                             <tr>
-                                <td>{{$item->name}}</td>
-                                <td>{{$item->email}}</td>
+                                <td>{{$item->fullname}}</td>
+                                <td>{{$item->staff->position}}</td>
+                                <td>{{number_format($item->staff->salary, 2)}} $</td>
                                 <td>
                                     @foreach ($item->getRoleNames() as $role)
                                     <span class="label label-table label-dark">{{$role}}</span>                                        
@@ -73,14 +74,14 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
-                                    <a href="" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
-                                    <form id="delete_form3" action="{{route('admin.admins.destroy', $item->id)}}" method="POST">
+                                    <form id="delete_form3" action="{{route('admin.restore', $item->id)}}" method="POST">
                                         @csrf
-                                        @method('Delete')
+                                        <button class="btn btn-icon demo-pli-pencil icon-lg add-tooltip demo-bootbox-confirm"></button>
+                                    </form>
+                                    <form id="delete_form3" action="{{route('admin.forcedelete', $item->id)}}" method="POST">
+                                        @csrf
                                         <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>
                                     </form>
-
 
                                 </td>
                             </tr>                            

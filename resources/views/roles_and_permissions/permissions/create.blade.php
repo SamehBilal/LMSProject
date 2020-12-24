@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app_layout')
 @section('extra-header-scripts')
         <!--DataTables [ OPTIONAL ]-->
         
@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.admins.store') }}" >
+					<form method="POST" action="{{ route('admin.permissions.store') }}" >
 						@csrf
 						<div class="panel-body">
 							<div class="row">
@@ -82,51 +82,6 @@
 										<label class="control-label">Name</label>
 										<input name="name" type="text" class="form-control" required>
 									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Email</label>
-										<input name="email" type="email" class="form-control" required>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Password</label>
-										<input name="password" type="password" class="form-control" required>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Confirm Password</label>
-										<input name="confirm-password" type="password" class="form-control" required>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<p class="text-main text-bold">Select Role</p>
-					
-									<!-- Multiple Select Choosen -->
-									<!--===================================================-->
-									<select id="demo-cs-multiselect" name="roles[]" data-placeholder="Choose a Country..." multiple tabindex="4" required>
-										@foreach ($roles as $role)
-											<option value="{{$role->id}}">{{$role->name}}</option>										
-										@endforeach
-									</select>
-
-								</div>
-								<div class="col-sm-6">
-									<p class="text-main text-bold">Select Extra Permissions</p>
-					
-									<!-- Multiple Select Choosen -->
-									<!--===================================================-->
-									<select id="demo-cs-multiselect" name="permissions[]" data-placeholder="Choose a Country..." multiple tabindex="4">
-										@foreach ($permissions as $permission)
-											<option value="{{$permission->id}}">{{$permission->name}}</option>										
-										@endforeach
-									</select>
 								</div>
 							</div>
 							

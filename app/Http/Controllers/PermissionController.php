@@ -17,7 +17,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $items = Permission::all();
+        return view('roles_and_permissions.permissions.index', compact('items'));
     }
 
     /**
@@ -27,7 +28,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('roles_and_permissions.permissions.create');
     }
 
     /**
@@ -38,7 +39,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $permission = Permission::create(['name' => $request->name]);
+
+        return back()->withSuccess(trans('app.success_store'));
     }
 
     /**

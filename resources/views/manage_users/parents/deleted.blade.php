@@ -38,36 +38,46 @@
         <!--===================================================-->
         <div class="panel">
             <div class="panel-heading">
-                <h3 class="panel-title">Add Role</h3>
+                <h3 class="panel-title">Deleted Parents List</h3>
             </div>
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.roles.create')}}"><i class="demo-pli-plus"></i> Add Role</a>
             </div>
         
             <div class="panel-body">
                 <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Role Name</th>
-                            <th>Role Permissions</th>
-                            <th>Role Users</th>
+                            <th>Parent Name</th>
+                            <th>Student Names</th>
+                            <th>Classes</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($items as $item)
                             <tr>
-                                <td>{{$item->name}}</td>
+                                <td>{{$item->fullname}}</td>
                                 <td>
-                                    @foreach ($item->permissions as $permission)
-                                        <li>{{$permission->name}}</li>
+                                    @foreach ($item->parentTo as $student)
+                                    <span class="label label-table label-dark">{{$student->user->fullname}}</span>                                        
                                     @endforeach
                                 </td>
                                 <td>
-                                    @foreach ($item->users as $user)
-                                        <li>{{$user->fullname}}</li>
-                                    @endforeach
+                                </td>
+                                <td>
+                                    {{-- <a href="{{ route('admin.admins.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a> --}}
+                                    <form id="delete_form3" action="{{route('admin.restore', $item->id)}}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-icon demo-pli-pencil icon-lg add-tooltip demo-bootbox-confirm"></button>
+                                    </form>
+                                    <form id="delete_form3" action="{{route('admin.forcedelete', $item->id)}}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>
+                                    </form>
+
+
                                 </td>
                             </tr>                            
                         @endforeach
