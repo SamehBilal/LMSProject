@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app_layout')
 @section('extra-header-scripts')
         <!--DataTables [ OPTIONAL ]-->
         
@@ -68,16 +68,114 @@
 			<div class="col-sm-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Edit Admin</h3>
+						<h3 class="panel-title">Create New Student</h3>
 					</div>
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.admins.update', $user->id) }}" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
+					<form method="POST" action="{{ route('admin.students.store') }}" enctype="multipart/form-data">
+						@csrf
 						<div class="panel-body">
-							@include('admin.components.edituser')							
+							@include('manage_users.partials.createuser')
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label class="control-label">Serial</label>
+										<input name="serial" value="{{ old('serial') }}" type="text" class="form-control" required>						
+									</div>
+									@error('serial')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Stage</label>
+										<select name="stage_id" class="form-control" required>
+											<option value="1">stage 1</option>
+											<option value="2">stage 2</option>
+										</select>									
+									</div>
+									@error('stage_id')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Class</label>
+										<select name="class_id" class="form-control" required>
+											<option value="1">class 1</option>
+											<option value="2">class 2</option>
+										</select>									
+									</div>
+									@error('class_id')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Status</label>
+										<select name="status" class="form-control" required>
+											<option value="hold">hold</option>
+											<option value="accepted">accepted</option>
+											<option value="graduated">graduated</option>
+										</select>									
+									</div>
+									@error('status')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Blood Type</label>
+										<select name="blood_type" class="form-control" required>
+											<option value="A+">A+</option>
+											<option value="A-">A-</option>
+											<option value="B+">B+</option>
+											<option value="B-">B-</option>
+											<option value="AB+">AB+</option>
+											<option value="AB-">AB-</option>
+											<option value="O+">O+</option>
+											<option value="O-">O-</option>
+										</select>									
+									</div>
+									@error('blood_type')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label class="control-label">Document</label>
+										<input name="document" type="file" class="form-control" required>
+									</div>
+									@error('document')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+							</div>
 						</div>
 						<div class="panel-footer text-right">
 							<button class="btn btn-success" type="submit">Submit</button>

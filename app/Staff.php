@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Staff extends Model
 {
     protected $fillable = [
-        'user_id', 'position', 'address','major','university','graduation_year','date_of_birth','cv','salary'
+        'user_id', 'position', 'address','major','university','graduation_year','cv','salary'
     ];
     public function user()
     {
@@ -17,11 +17,9 @@ class Staff extends Model
     {
         $common = [
             'position'          => "required",
-            'address'           => 'required',
             'major'             => "required",
             'university'        => "required",
             'graduation_year'   => "required|date_format:Y-m-d|before:today",
-            'date_of_birth'     => "nullable|date_format:Y-m-d|before:today",
             'cv'                => "nullable|max:10000|mimes:doc,docx,pdf",
             'salary'            => "required|numeric",
 

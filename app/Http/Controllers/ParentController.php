@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\IsParent;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class ParentController extends Controller
 {
-    /**
+   /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $items = User::role('admin')->latest('updated_at')->get();
-
-
-
-        return view('admin.users.index', compact('items'));
+        $items = User::role('parent')->with('parentTo')->latest('updated_at')->get();
+        return view('manage_users.parents.index', compact('items'));
     }
 
     /**
@@ -27,10 +29,8 @@ class ParentController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereNotIn('name', ['admin', 'Super Admin'])->get();
-        $permissions =  Permission::all();
-        dd($permissions);
-        return view('admin.users.create');
+        $students = User::role('student')->get();
+        return view('manage_users.parents.create', compact('students'));
     }
 
     /**
@@ -42,13 +42,25 @@ class ParentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, User::rules());
-
         $data = $request->all();
-        $data['password'] = bcrypt(request('password'));
+        $data['password'] = Hash::make($data['password']);
 
-        User::create($data);
+        //create user
+        $helperController = new HelperController();
+        $user = $helperController->createuser($data);
 
-        return back()->withSuccess(trans('app.success_store'));
+        foreach ($request->students as $student) {
+            $parent = new IsParent;
+
+            $parent->parent_id = $user->id;
+            $parent->student_id = $student;
+            $parent->save();
+        }
+
+
+        $user->assignRole('parent');
+
+        return redirect()->route('admin.parents.index');
     }
 
     /**
@@ -70,9 +82,10 @@ class ParentController extends Controller
      */
     public function edit($id)
     {
-        $item = User::findOrFail($id);
+        $user = User::where('id',$id)->first();
+        $students = User::role('student')->get();
+        return view('manage_users.parents.edit', compact('user','students'));
 
-        return view('admin.users.edit', compact('item'));
     }
 
     /**
@@ -84,19 +97,28 @@ class ParentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, User::rules(true, $id));
+        $this->validate($request, User::rules($update = true, $id));
+        $this->validate($request, Staff::rules($update = true));
 
-        $item = User::findOrFail($id);
 
         $data = $request->all();
+        $data['password'] = Hash::make($data['password']);
 
-        if (request()->has('password')) {
-            $data['password'] = bcrypt(request('password'));
-        }
+        //update user data
+        $helperController = new HelperController();
+        $user = $helperController->updateuser($data, $id);
 
-        $item->update($data);
 
-        return redirect()->route(ADMIN . '.users.index')->withSuccess(trans('app.success_update'));
+        // foreach ($request->students as $student) {
+        //     $parent = new IsParent;
+
+        //     $parent->parent_id = $user->id;
+        //     $parent->student_id = $student;
+        //     $parent->save();
+        // }
+
+        return redirect()->route('admin.parents.index');
+
     }
 
     /**
@@ -107,8 +129,15 @@ class ParentController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $parent = IsParent::where('parent_id',$id)->delete();
+        $user = User::find($id);
+        $user->syncPermissions();
+        $user->syncRoles();
 
-        return back()->withSuccess(trans('app.success_destroy'));
+        User::destroy($id);
+        
+
+        return back();
     }
+
 }

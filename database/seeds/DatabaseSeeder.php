@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UserSeeder::class);
-        DB::table('users')->insert([
+        $user = DB::table('users')->insert([
             'username' => 'monsef.admin.1',
             'firstname' => 'monsef',
             'lastname' => 'Admin',
@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+        
         Role::create(['name' => 'Super Admin']);
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'parent']);

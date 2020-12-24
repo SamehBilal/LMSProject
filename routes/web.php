@@ -30,7 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::group(['prefix' => 'admin', 'as' => 'admin' . '.', 'middleware'=>['role:admin|Super Admin']], function () {
         Route::get('/', function () {
-            return view('admin.dashboard');
+            return view('dashboard');
         });        
         Route::resource('admins', 'AdminController');
         Route::resource('students', 'StudentController');

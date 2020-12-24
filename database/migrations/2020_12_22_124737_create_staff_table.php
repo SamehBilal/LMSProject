@@ -18,17 +18,16 @@ class CreateStaffTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('position');
-            $table->string('address');
             $table->string('major');
             $table->string('university');
             $table->string('graduation_year');
-            $table->date('date_of_birth')->nullable();
             $table->string('cv')->nullable();;
             $table->integer('salary');
 
-
+  
             $table->timestamps();
-            
+            $table->index(['id','user_id']);
+
         });
     }
 

@@ -19,7 +19,7 @@ class AdminController extends Controller
     public function index()
     {
         $items = User::role('admin')->latest('updated_at')->get();
-        return view('admin.admins.index', compact('items'));
+        return view('manage_users.admins.index', compact('items'));
     }
 
     /**
@@ -29,7 +29,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.admins.create');
+        return view('manage_users.admins.create');
     }
 
     /**
@@ -44,18 +44,11 @@ class AdminController extends Controller
 
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
-        $user = User::create([
-            'username' => $data['username'],
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'fullname' => $data['fullname'],
-            'email' => $data['email'],
-            'password' => $data['password'],
-            'other_email' => $data['other_email'],
-            'phone' => $data['phone'],
-            'gender' => $data['gender'],
-            'avatar' => $request->avatar,
-        ]);
+
+        //create user data
+        $helperController = new HelperController();
+        $user = $helperController->createuser($data);
+
         $user->assignRole('admin');
 
         return redirect()->route('admin.admins.index');
@@ -81,7 +74,7 @@ class AdminController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('admin.admins.edit', compact('user'));
+        return view('manage_users.admins.edit', compact('user'));
 
     }
 
@@ -98,18 +91,10 @@ class AdminController extends Controller
 
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
-        $user = User::where('id',$id)->update([
-            'username' => $data['username'],
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'fullname' => $data['fullname'],
-            'email' => $data['email'],
-            'password' => $data['password'],
-            'other_email' => $data['other_email'],
-            'phone' => $data['phone'],
-            'gender' => $data['gender'],
-            'avatar' => $request->avatar,
-        ]);
+        
+        //update user data
+        $helperController = new HelperController();
+        $user = $helperController->updateuser($data, $id);
 
         return redirect()->route('admin.admins.index');
 

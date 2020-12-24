@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app_layout')
 @section('extra-header-scripts')
         <!--DataTables [ OPTIONAL ]-->
         <link href="{{asset('plugins/datatables/media/css/dataTables.bootstrap.css')}}" rel="stylesheet">
@@ -38,12 +38,12 @@
         <!--===================================================-->
         <div class="panel">
             <div class="panel-heading">
-                <h3 class="panel-title">Staff List</h3>
+                <h3 class="panel-title">Students List</h3>
             </div>
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.staff.create')}}"><i class="demo-pli-plus"></i> Add Staff</a>
+                <a class="btn btn-primary" href="{{route('admin.students.create')}}"><i class="demo-pli-plus"></i> Add New Student</a>
             </div>
         
             <div class="panel-body">
@@ -51,10 +51,10 @@
                     <thead>
                         <tr>
                             <th>Full Name</th>
-                            <th>Position</th>
-                            <th>Salary</th>
-                            <th>Roles</th>
-                            <th>Extra Permissions</th>
+                            <th>Serial</th>
+                            <th>Stage</th>
+                            <th>Class</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -62,28 +62,18 @@
                         @foreach ($items as $item)
                             <tr>
                                 <td>{{$item->fullname}}</td>
-                                <td>{{$item->staff->position}}</td>
-                                <td>{{number_format($item->staff->salary, 2)}} $</td>
-                                <td>
-                                    @foreach ($item->getRoleNames() as $role)
-                                    <span class="label label-table label-dark">{{$role}}</span>                                        
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @foreach ($item->getAllPermissions() as $permission)
-                                        <span class="label label-table label-success">{{$permission->name}}</span>                                        
-                                    @endforeach
-                                </td>
+                                <td>{{$item->student->serial}}</td>
+                                <td>{{($item->student->stage_id)}}</td>
+                                <td>{{($item->student->class_id)}}</td>
+                                <td>{{($item->student->status)}}</td>
                                 <td>
                                     <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
-                                    <a href="{{ route('admin.staff.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
-                                    <form id="delete_form3" action="{{route('admin.staff.destroy', $item->id)}}" method="POST">
+                                    <a href="{{ route('admin.students.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
+                                    <form id="delete_form3" action="{{route('admin.students.destroy', $item->id)}}" method="POST">
                                         @csrf
                                         @method('Delete')
                                         <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>
                                     </form>
-
-
                                 </td>
                             </tr>                            
                         @endforeach

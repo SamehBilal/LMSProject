@@ -23,11 +23,18 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('other_email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('gender')->nullable();
+            $table->integer('phone')->nullable();
+            $table->integer('phone2')->nullable();
+            $table->set('gender', ['male', 'female'])->nullable();
+            $table->set('religion', ['Islam', 'Christianity'])->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('address')->nullable();
             $table->string('avatar')->default('1.png')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index(['id']);
+
         });
     }
 

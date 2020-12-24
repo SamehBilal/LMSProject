@@ -19,7 +19,7 @@ class StaffController extends Controller
     public function index()
     {
         $items = User::role('staff')->latest('updated_at')->get();
-        return view('admin.staff.index', compact('items'));
+        return view('manage_users.staff.index', compact('items'));
     }
 
     /**
@@ -29,7 +29,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        return view('admin.staff.create');
+        return view('manage_users.staff.create');
     }
 
     /**
@@ -45,30 +45,21 @@ class StaffController extends Controller
 
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
-        $user = User::create([
-            'username' => $data['username'],
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'fullname' => $data['fullname'],
-            'email' => $data['email'],
-            'password' => $data['password'],
-            'other_email' => $data['other_email'],
-            'phone' => $data['phone'],
-            'gender' => $data['gender'],
-            'avatar' => $request->avatar,
-        ]);
+
+        //create user
+        $helperController = new HelperController();
+        $user = $helperController->createuser($data);
 
         Staff::create([
             'user_id' => $user->id,
             'position' => $data['position'],
-            'address' => $data['address'],
             'major' => $data['major'],
             'university' => $data['university'],
             'graduation_year' => $data['graduation_year'],
-            'date_of_birth' => $data['date_of_birth'],
             'cv' => $request->cv,
             'salary' => $data['salary'],
         ]);
+
         $user->assignRole('staff');
 
         return redirect()->route('admin.staff.index');
@@ -94,7 +85,7 @@ class StaffController extends Controller
     public function edit($id)
     {
         $user = User::where('id',$id)->with('staff')->first();
-        return view('admin.staff.edit', compact('user'));
+        return view('manage_users.staff.edit', compact('user'));
 
     }
 
@@ -113,27 +104,17 @@ class StaffController extends Controller
 
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
-        $user = User::where('id',$id)->update([
-            'username' => $data['username'],
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'fullname' => $data['fullname'],
-            'email' => $data['email'],
-            'password' => $data['password'],
-            'other_email' => $data['other_email'],
-            'phone' => $data['phone'],
-            'gender' => $data['gender'],
-            'avatar' => $request->avatar,
-        ]);
+
+        //update user data
+        $helperController = new HelperController();
+        $user = $helperController->updateuser($data, $id);
+
 
         Staff::where('user_id',$id)->update([
-            'user_id' => $id,
             'position' => $data['position'],
-            'address' => $data['address'],
             'major' => $data['major'],
             'university' => $data['university'],
             'graduation_year' => $data['graduation_year'],
-            'date_of_birth' => $data['date_of_birth'],
             'cv' => $request->cv,
             'salary' => $data['salary'],
         ]);

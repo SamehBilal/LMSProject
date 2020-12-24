@@ -107,10 +107,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse in">
-                                <li class="active-link"><a href="index.html">Dashboard 1</a></li>
-                                <li><a href="dashboard-2.html">Dashboard 2</a></li>
-                                <li><a href="dashboard-3.html">Dashboard 3</a></li>
-                                
+                                <li class="active-link"><a href="index.html">Dashboard 1</a></li>                                
                             </ul>
                         </li>
             
@@ -130,7 +127,7 @@
                         </li>
             
                         <!--Menu list item-->
-                        <li>
+                        {{-- <li>
                             <a href="widgets.html">
                                 <i class="demo-pli-gear"></i>
                                 <span class="menu-title">
@@ -138,7 +135,7 @@
                                     <span class="pull-right badge badge-warning">24</span>
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
             
                         <li class="list-divider"></li>
             
@@ -155,7 +152,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="ui-buttons.html">All Students</a></li>
+                                <li><a href="{{route('admin.students.index')}}">All Students</a></li>
                                 
                             </ul>
                         </li>
@@ -170,7 +167,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="forms-general.html">All Parents</a></li>                                
+                                <li><a href="{{route('admin.parents.index')}}">All Parents</a></li>                                
                             </ul>
                         </li>
             
@@ -184,8 +181,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="tables-static.html">All Teachers</a></li>
-\                                
+                                <li><a href="{{route('admin.teachers.index')}}">All Teachers</a></li>
                             </ul>
                         </li>
             

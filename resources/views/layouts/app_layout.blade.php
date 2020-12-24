@@ -78,7 +78,7 @@
         
         <!--NAVBAR-->
         <!--===================================================-->
-		@include('admin.components.upperNavbar')
+		@include('components.upperNavbar')
         <!--===================================================-->
         <!--END NAVBAR-->
 
@@ -93,13 +93,13 @@
 
             
             <!--ASIDE-->
-			@include('admin.components.aside')
+			@include('components.aside')
             <!--END ASIDE-->
 
             
             <!--MAIN NAVIGATION-->
 			<!--===================================================-->
-			@include('admin.components.sideNavbar')
+			@include('components.sideNavbar')
             <!--===================================================-->
             <!--END MAIN NAVIGATION-->
 
@@ -109,7 +109,7 @@
 
         <!-- FOOTER -->
         <!--===================================================-->
-		@include('admin.components.footer')
+		@include('components.footer')
 		<!--===================================================-->
         <!-- END FOOTER -->
 

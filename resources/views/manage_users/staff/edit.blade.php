@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app_layout')
 @section('extra-header-scripts')
         <!--DataTables [ OPTIONAL ]-->
         
@@ -68,16 +68,16 @@
 			<div class="col-sm-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Create New Staff Member</h3>
+						<h3 class="panel-title">Edit Admin</h3>
 					</div>
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.staff.store') }}" enctype="multipart/form-data">
-						@csrf
+					<form method="POST" action="{{ route('admin.staff.update', $user->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
 						<div class="panel-body">
-							@include('admin.components.createuser')
-
+							@include('manage_users.partials.edituser')		
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
@@ -97,7 +97,7 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="control-label">Salary</label>
-										<input name="salary" value="{{ old('salary') }}" type="number" class="form-control" required>
+										<input name="salary" value="{{ $user->staff->salary ?? old('salary') }}" type="number" class="form-control" required>
 									</div>
 									@error('salary')
 									<span class="invalid-feedback" role="alert">
@@ -111,7 +111,7 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="control-label">Major</label>
-										<input name="major" value="{{ old('major') }}" type="text" class="form-control" required>
+										<input name="major" value="{{ $user->staff->major ?? old('major') }}" type="text" class="form-control" required>
 									</div>
 									@error('major')
 										<span class="invalid-feedback" role="alert">
@@ -123,7 +123,7 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="control-label">University</label>
-										<input name="university" value="{{ old('university') }}" type="text" class="form-control" required>
+										<input name="university" value="{{ $user->staff->university ?? old('university') }}" type="text" class="form-control" required>
 									</div>
 									@error('university')
 									<span class="invalid-feedback" role="alert">
@@ -137,7 +137,7 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="control-label">Graduation Year</label>
-										<input name="graduation_year" value="{{ old('graduation_year') }}" type="date" class="form-control" required>
+										<input name="graduation_year" value="{{ $user->staff->graduation_year ?? old('graduation_year') }}" type="date" class="form-control" required>
 									</div>
 									@error('graduation_year')
 										<span class="invalid-feedback" role="alert">
@@ -148,34 +148,8 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="control-label">Date of Birth</label>
-										<input name="date_of_birth" value="{{ old('date_of_birth') }}" type="date" class="form-control" required>
-									</div>
-									@error('date_of_birth')
-									<span class="invalid-feedback" role="alert">
-										<strong>{{ $message }}</strong>
-									</span>
-									@enderror
-							
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Address</label>
-										<input name="address" value="{{ old('address') }}" type="text" class="form-control" required>
-									</div>
-									@error('address')
-										<span class="invalid-feedback" role="alert">
-											<strong>{{ $message }}</strong>
-										</span>
-									@enderror
-							
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
 										<label class="control-label">CV</label>
-										<input name="cv" value="{{ old('cv') }}" type="file" class="form-control" required>
+										<input name="cv" value="{{ old('cv') }}" type="file" class="form-control">
 									</div>
 									@error('cv')
 									<span class="invalid-feedback" role="alert">
@@ -185,6 +159,7 @@
 							
 								</div>
 							</div>
+
 						</div>
 						<div class="panel-footer text-right">
 							<button class="btn btn-success" type="submit">Submit</button>

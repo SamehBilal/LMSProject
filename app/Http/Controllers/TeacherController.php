@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Staff;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class TeacherController extends Controller
 {
@@ -13,11 +18,8 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $items = User::role('admin')->latest('updated_at')->get();
-
-
-
-        return view('admin.users.index', compact('items'));
+        $items = User::role('teacher')->latest('updated_at')->get();
+        return view('manage_users.teachers.index', compact('items'));
     }
 
     /**
@@ -27,10 +29,7 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereNotIn('name', ['admin', 'Super Admin'])->get();
-        $permissions =  Permission::all();
-        dd($permissions);
-        return view('admin.users.create');
+        return view('manage_users.teachers.create');
     }
 
     /**
@@ -42,13 +41,28 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, User::rules());
+        $this->validate($request, Staff::rules());
 
         $data = $request->all();
-        $data['password'] = bcrypt(request('password'));
+        $data['password'] = Hash::make($data['password']);
 
-        User::create($data);
+        //create user
+        $helperController = new HelperController();
+        $user = $helperController->createuser($data);
 
-        return back()->withSuccess(trans('app.success_store'));
+        Staff::create([
+            'user_id' => $user->id,
+            'position' => $data['position'],
+            'major' => $data['major'],
+            'university' => $data['university'],
+            'graduation_year' => $data['graduation_year'],
+            'cv' => $request->cv,
+            'salary' => $data['salary'],
+        ]);
+
+        $user->assignRole('teacher');
+
+        return redirect()->route('admin.teachers.index');
     }
 
     /**
@@ -70,9 +84,9 @@ class TeacherController extends Controller
      */
     public function edit($id)
     {
-        $item = User::findOrFail($id);
+        $user = User::where('id',$id)->with('staff')->first();
+        return view('manage_users.teachers.edit', compact('user'));
 
-        return view('admin.users.edit', compact('item'));
     }
 
     /**
@@ -84,19 +98,29 @@ class TeacherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, User::rules(true, $id));
+        $this->validate($request, User::rules($update = true, $id));
+        $this->validate($request, Staff::rules($update = true));
 
-        $item = User::findOrFail($id);
 
         $data = $request->all();
+        $data['password'] = Hash::make($data['password']);
 
-        if (request()->has('password')) {
-            $data['password'] = bcrypt(request('password'));
-        }
+        //update user data
+        $helperController = new HelperController();
+        $user = $helperController->updateuser($data, $id);
 
-        $item->update($data);
 
-        return redirect()->route(ADMIN . '.users.index')->withSuccess(trans('app.success_update'));
+        Staff::where('user_id',$id)->update([
+            'position' => $data['position'],
+            'major' => $data['major'],
+            'university' => $data['university'],
+            'graduation_year' => $data['graduation_year'],
+            'cv' => $request->cv,
+            'salary' => $data['salary'],
+        ]);
+
+        return redirect()->route('admin.teachers.index');
+
     }
 
     /**
@@ -107,8 +131,16 @@ class TeacherController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $staff = Staff::where('user_id',$id)->first();
+        Staff::destroy($staff->id);
+        $user = User::find($id);
+        $user->syncPermissions();
+        $user->syncRoles();
 
-        return back()->withSuccess(trans('app.success_destroy'));
+        User::destroy($id);
+        
+
+        return back();
     }
+
 }

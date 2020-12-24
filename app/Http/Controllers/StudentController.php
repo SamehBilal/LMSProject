@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Student;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class StudentController extends Controller
 {
@@ -13,11 +18,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $items = User::role('admin')->latest('updated_at')->get();
-
-
-
-        return view('admin.users.index', compact('items'));
+        $items = User::role('student')->with('student')->latest('updated_at')->get();
+        return view('manage_users.students.index', compact('items'));
     }
 
     /**
@@ -27,10 +29,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereNotIn('name', ['admin', 'Super Admin'])->get();
-        $permissions =  Permission::all();
-        dd($permissions);
-        return view('admin.users.create');
+        return view('manage_users.students.create');
     }
 
     /**
@@ -42,13 +41,28 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, User::rules());
+        $this->validate($request, Student::rules());
 
         $data = $request->all();
-        $data['password'] = bcrypt(request('password'));
+        $data['password'] = Hash::make($data['password']);
 
-        User::create($data);
+        //create user
+        $helperController = new HelperController();
+        $user = $helperController->createuser($data);
 
-        return back()->withSuccess(trans('app.success_store'));
+        Student::create([
+            'user_id'   => $user->id,
+            'serial'    => $data['serial'],
+            'stage_id'  => $data['stage_id'],
+            'class_id'  => $data['class_id'],
+            'document'  => $data['document'],
+            'status'    => $data['status'],
+            'blood_type'=> $data['blood_type'],
+        ]);
+
+        $user->assignRole('student');
+
+        return redirect()->route('admin.students.index');
     }
 
     /**
@@ -70,9 +84,9 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $item = User::findOrFail($id);
+        $user = User::where('id',$id)->with('student')->first();
+        return view('manage_users.students.edit', compact('user'));
 
-        return view('admin.users.edit', compact('item'));
     }
 
     /**
@@ -84,19 +98,31 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, User::rules(true, $id));
+        $this->validate($request, User::rules($update = true, $id));
 
-        $item = User::findOrFail($id);
+        $student = Student::where('user_id',$id)->first();
+        $this->validate($request, Student::rules($update = true, $student->id));
+
 
         $data = $request->all();
+        $data['password'] = Hash::make($data['password']);
 
-        if (request()->has('password')) {
-            $data['password'] = bcrypt(request('password'));
-        }
+        //update user data
+        $helperController = new HelperController();
+        $user = $helperController->updateuser($data, $id);
 
-        $item->update($data);
 
-        return redirect()->route(ADMIN . '.users.index')->withSuccess(trans('app.success_update'));
+        Student::where('user_id',$id)->update([
+            'serial'    => $data['serial'],
+            'stage_id'  => $data['stage_id'],
+            'class_id'  => $data['class_id'],
+            'document'  => $request->document,
+            'status'    => $data['status'],
+            'blood_type'=> $data['blood_type'],
+            ]);
+
+        return redirect()->route('admin.students.index');
+
     }
 
     /**
@@ -107,8 +133,15 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $student = Student::where('user_id',$id)->first();
+        Student::destroy($student->id);
+        $user = User::find($id);
+        $user->syncPermissions();
+        $user->syncRoles();
 
-        return back()->withSuccess(trans('app.success_destroy'));
+        User::destroy($id);
+        
+
+        return back();
     }
 }

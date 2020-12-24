@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app_layout')
 @section('extra-header-scripts')
         <!--DataTables [ OPTIONAL ]-->
         
@@ -68,15 +68,99 @@
 			<div class="col-sm-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Create New Admin</h3>
+						<h3 class="panel-title">Create New Staff Member</h3>
 					</div>
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.admins.store') }}" enctype="multipart/form-data">
+					<form method="POST" action="{{ route('admin.teachers.store') }}" enctype="multipart/form-data">
 						@csrf
 						<div class="panel-body">
-							@include('admin.components.createuser')							
+							@include('manage_users.partials.createuser')
+
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Position</label>
+										<select name="position" class="form-control" required>
+											<option value="position1">Position1</option>
+											<option value="position2">Position2</option>
+										</select>									
+									</div>
+									@error('position')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Salary</label>
+										<input name="salary" value="{{ old('salary') }}" type="number" class="form-control" required>
+									</div>
+									@error('salary')
+									<span class="invalid-feedback" role="alert">
+										<strong>{{ $message }}</strong>
+									</span>
+									@enderror
+							
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Major</label>
+										<input name="major" value="{{ old('major') }}" type="text" class="form-control" required>
+									</div>
+									@error('major')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">University</label>
+										<input name="university" value="{{ old('university') }}" type="text" class="form-control" required>
+									</div>
+									@error('university')
+									<span class="invalid-feedback" role="alert">
+										<strong>{{ $message }}</strong>
+									</span>
+									@enderror
+							
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Graduation Year</label>
+										<input name="graduation_year" value="{{ old('graduation_year') }}" type="date" class="form-control" required>
+									</div>
+									@error('graduation_year')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">CV</label>
+										<input name="cv" value="{{ old('cv') }}" type="file" class="form-control" required>
+									</div>
+									@error('cv')
+									<span class="invalid-feedback" role="alert">
+										<strong>{{ $message }}</strong>
+									</span>
+									@enderror
+							
+								</div>
+
+							</div>
 						</div>
 						<div class="panel-footer text-right">
 							<button class="btn btn-success" type="submit">Submit</button>
