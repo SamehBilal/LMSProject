@@ -50,15 +50,18 @@ class StaffController extends Controller
         $helperController = new HelperController();
         $user = $helperController->createuser($data);
 
-        Staff::create([
+        $staff = Staff::create([
             'user_id' => $user->id,
             'position' => $data['position'],
             'major' => $data['major'],
             'university' => $data['university'],
             'graduation_year' => $data['graduation_year'],
-            'cv' => $request->cv,
             'salary' => $data['salary'],
         ]);
+
+        $cv = request()->file('cv')->getClientOriginalName();
+        request()->file('cv')->storeAs('/',$staff->user_id . '/' . $cv, '');
+        $staff->update(['cv' =>  $cv]);
 
         $user->assignRole('staff');
 
@@ -115,9 +118,27 @@ class StaffController extends Controller
             'major' => $data['major'],
             'university' => $data['university'],
             'graduation_year' => $data['graduation_year'],
-            'cv' => $request->cv,
             'salary' => $data['salary'],
         ]);
+
+        if(request()->hasFile('cv'))
+        {
+            
+            $staff = Staff::where('user_id',$id)->first();
+            
+            $cv = '/storage/'. $staff->user_id . '/' . $staff->cv;
+            $path = str_replace('\\','/',public_path());
+            
+            if(file_exists($path . $cv))
+            {
+                unlink($path . $cv);
+            }
+
+            $cv = request()->file('cv')->getClientOriginalName();
+            request()->file('cv')->storeAs('/',$staff->user_id . '/' . $cv, '');
+            $staff->update(['cv' =>  $cv]);
+
+        }
 
         return redirect()->route('admin.staff.index');
 

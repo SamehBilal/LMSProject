@@ -153,7 +153,7 @@
                             <!--Submenu-->
                             <ul class="collapse">
                                 <li><a href="{{route('admin.students.index')}}">All Students</a></li>
-                                <li><a href="{{route('admin.students.deleted')}}">Deleted Admins</a></li>                                  
+                                <li><a href="{{route('admin.students.deleted')}}">Deleted Students</a></li>                                  
 
                                 
                             </ul>
@@ -170,7 +170,7 @@
                             <!--Submenu-->
                             <ul class="collapse">
                                 <li><a href="{{route('admin.parents.index')}}">All Parents</a></li>
-                                <li><a href="{{route('admin.parents.deleted')}}">Deleted Admins</a></li>                                  
+                                <li><a href="{{route('admin.parents.deleted')}}">Deleted Parents</a></li>                                  
                                 
                             </ul>
                         </li>
@@ -186,7 +186,7 @@
                             <!--Submenu-->
                             <ul class="collapse">
                                 <li><a href="{{route('admin.teachers.index')}}">All Teachers</a></li>
-                                <li><a href="{{route('admin.teachers.deleted')}}">Deleted Admins</a></li>                                  
+                                <li><a href="{{route('admin.teachers.deleted')}}">Deleted Teachers</a></li>                                  
 
                             </ul>
                         </li>
@@ -202,7 +202,7 @@
                             <!--Submenu-->
                             <ul class="collapse">
                                 <li><a href="{{route('admin.staff.index')}}">All Staff</a></li> 
-                                <li><a href="{{route('admin.staff.deleted')}}">Deleted Admins</a></li>                                  
+                                <li><a href="{{route('admin.staff.deleted')}}">Deleted Staff</a></li>                                  
                                
                             </ul>
                         </li>

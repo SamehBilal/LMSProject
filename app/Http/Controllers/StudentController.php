@@ -50,15 +50,18 @@ class StudentController extends Controller
         $helperController = new HelperController();
         $user = $helperController->createuser($data);
 
-        Student::create([
+        $student = Student::create([
             'user_id'   => $user->id,
             'serial'    => $data['serial'],
             'stage_id'  => $data['stage_id'],
             'class_id'  => $data['class_id'],
-            'document'  => $data['document'],
             'status'    => $data['status'],
             'blood_type'=> $data['blood_type'],
         ]);
+
+        $document = request()->file('document')->getClientOriginalName();
+        request()->file('document')->storeAs('/',$student->user_id . '/' . $document, '');
+        $student->update(['document' =>  $document]);
 
         $user->assignRole('student');
 
@@ -120,7 +123,24 @@ class StudentController extends Controller
             'status'    => $data['status'],
             'blood_type'=> $data['blood_type'],
             ]);
+        if(request()->hasFile('document'))
+        {
+            
+            $student = Student::where('user_id',$id)->first();
+            
+            $document = '/storage/'. $student->user_id . '/' . $student->document;
+            $path = str_replace('\\','/',public_path());
+            
+            if(file_exists($path . $document))
+            {
+                unlink($path . $document);
+            }
 
+            $document = request()->file('document')->getClientOriginalName();
+            request()->file('document')->storeAs('/',$student->user_id . '/' . $document, '');
+            $student->update(['document' =>  $document]);
+
+        }
         return redirect()->route('admin.students.index');
 
     }

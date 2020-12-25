@@ -12,6 +12,7 @@ class HelperController extends Controller
 {
     public function createuser($data)
     {
+
         $user = User::create([
             'username'      => $data['username'],
             'firstname'     => $data['firstname'],
@@ -26,15 +27,19 @@ class HelperController extends Controller
             'religion'      => $data['religion'],
             'date_of_birth' => $data['date_of_birth'],
             'address'       => $data['address'],
-            // 'avatar'        => $request->avatar,
         ]);
+
+        if(request()->hasFile('avatar'))
+        {
+            $this->addNewAvatar($user);
+        }
 
         return $user;
     }
 
     public function updateuser($data, $id)
     {
-        $user = User::where('id',$id)->update([
+        User::where('id',$id)->update([
             'username'      => $data['username'],
             'firstname'     => $data['firstname'],
             'lastname'      => $data['lastname'],
@@ -48,10 +53,19 @@ class HelperController extends Controller
             'religion'      => $data['religion'],
             'date_of_birth' => $data['date_of_birth'],
             'address'       => $data['address'],
-            // 'avatar' => $request->avatar,
         ]);
 
-        return $user;
+        if(request()->hasFile('avatar'))
+        {
+            
+            $user = User::findOrFail($id);
+            
+            $this->deleteOldAvatar($user);
+
+            $this->addNewAvatar($user);
+        }
+
+        return true;
     }
 
     public function restore($id)
@@ -78,16 +92,57 @@ class HelperController extends Controller
 
         }elseif ($user->hasRole('staff') || $user->hasRole('teacher')) {
 
-            Staff::where('user_id',$id)->first()->delete();
+            $staff = Staff::where('user_id',$id)->first();
+            $cv = '/storage/'. $staff->user_id . '/' . $staff->cv;
+            $path = str_replace('\\','/',public_path());
+            
+            if(file_exists($path . $cv))
+            {
+                unlink($path . $cv);
+            }
+            $staff->delete();
 
         }elseif ($user->hasRole('student')) {
-            Student::where('user_id',$id)->first()->delete();
+            $student = Student::where('user_id',$id)->first();
+
+            $document = '/storage/'. $student->user_id . '/' . $student->document;
+            $path = str_replace('\\','/',public_path());
+            
+            if(file_exists($path . $document))
+            {
+                unlink($path . $document);
+            }
+            $student->delete();
         }
+
+        $this->deleteOldAvatar($user);
 
         $user->syncPermissions();
         $user->syncRoles();
         $user->forceDelete();
         
         return back();
+    }
+
+    
+    public function addNewAvatar($user)
+    {
+        $avatar = request()->file('avatar')->getClientOriginalName();
+        request()->file('avatar')->storeAs('/',$user->id . '/' . $avatar, '');
+        $user->update(['avatar' =>  $avatar]);
+
+        return true;
+    }
+
+    public function deleteOldAvatar($user)
+    {
+        $image = '/storage/'. $user->id . '/' . $user->avatar;
+        $path = str_replace('\\','/',public_path());
+        
+        if(file_exists($path . $image))
+        {
+            unlink($path . $image);
+        }
+        return true;
     }
 }

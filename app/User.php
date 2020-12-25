@@ -74,6 +74,7 @@ class User extends Authenticatable
             'religion'      => Rule::in(['Islam','Christianity']),
             'date_of_birth' => "nullable|date_format:Y-m-d|before:today",
             'address'       => 'required',
+            'avatar'        => 'nullable|image|mimes:jpeg,jpg,png,gif|max:10000'
 
         ];
 

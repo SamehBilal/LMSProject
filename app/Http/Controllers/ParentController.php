@@ -98,7 +98,6 @@ class ParentController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, User::rules($update = true, $id));
-        $this->validate($request, Staff::rules($update = true));
 
 
         $data = $request->all();
@@ -108,14 +107,16 @@ class ParentController extends Controller
         $helperController = new HelperController();
         $user = $helperController->updateuser($data, $id);
 
+        // update parent relation table delete old and add updated
+        IsParent::where('parent_id',$id)->delete();
+        $user = User::where('id',$id)->first();
+        foreach ($request->students as $student) {
+            $parent = new IsParent;
 
-        // foreach ($request->students as $student) {
-        //     $parent = new IsParent;
-
-        //     $parent->parent_id = $user->id;
-        //     $parent->student_id = $student;
-        //     $parent->save();
-        // }
+            $parent->parent_id = $user->id;
+            $parent->student_id = $student;
+            $parent->save();
+        }
 
         return redirect()->route('admin.parents.index');
 

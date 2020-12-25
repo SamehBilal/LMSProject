@@ -85,7 +85,15 @@
 											<label class="control-label">Students</label>
 											<select name="students[]" multiple class="form-control" required>
 												@foreach ($students as $student)
-													<option value="{{$student->id}}">{{$student->username}}</option>
+														<option
+														@foreach ($user->parentTo as $parent)
+														 @if ($parent->student_id  == $student->id)selected 
+														 @endif
+														 @endforeach
+														value="{{$student->id}}">
+														 {{$student->username}}
+														</option>
+													
 												@endforeach
 											</select>									
 										</div>
