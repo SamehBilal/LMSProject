@@ -81,13 +81,14 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="control-label">Position</label>
-										<select name="position" class="form-control" required>
-											<option value="position1">Position1</option>
-											<option value="position2">Position2</option>
+										<label class="control-label">Course</label>
+										<select name="course_id" class="form-control" required>
+											@foreach ($courses as $course)
+												<option value="{{$course->id}}">{{$course->title}}</option>
+											@endforeach
 										</select>									
 									</div>
-									@error('position')
+									@error('course_id')
 										<span class="invalid-feedback" role="alert">
 											<strong>{{ $message }}</strong>
 										</span>
@@ -110,10 +111,10 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="control-label">Major</label>
-										<input name="major" value="{{ old('major') }}" type="text" class="form-control" required>
+										<label class="control-label">Graduation Year</label>
+										<input name="graduation_year" value="{{ old('graduation_year') }}" type="date" class="form-control" required>
 									</div>
-									@error('major')
+									@error('graduation_year')
 										<span class="invalid-feedback" role="alert">
 											<strong>{{ $message }}</strong>
 										</span>
@@ -136,17 +137,20 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="control-label">Graduation Year</label>
-										<input name="graduation_year" value="{{ old('graduation_year') }}" type="date" class="form-control" required>
+										<label class="control-label">Classes</label>
+										<select name="class_id[]" class="form-control" multiple required>
+											@foreach ($classes as $class)
+												<option value="{{$class->id}}">{{$class->name}}</option>
+											@endforeach
+										</select>									
 									</div>
-									@error('graduation_year')
+									@error('class_id')
 										<span class="invalid-feedback" role="alert">
 											<strong>{{ $message }}</strong>
 										</span>
 									@enderror
 							
 								</div>
-
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label class="control-label">CV</label>

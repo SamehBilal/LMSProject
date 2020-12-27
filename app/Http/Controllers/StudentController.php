@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Stage;
 use App\Student;
+use App\Class_room;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -29,7 +31,9 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('manage_users.students.create');
+        $classes = Class_room::all();
+        $stages  = Stage::all();
+        return view('manage_users.students.create', compact('classes','stages'));
     }
 
     /**
@@ -88,7 +92,9 @@ class StudentController extends Controller
     public function edit($id)
     {
         $user = User::where('id',$id)->with('student')->first();
-        return view('manage_users.students.edit', compact('user'));
+        $classes = Class_room::all();
+        $stages  = Stage::all();
+        return view('manage_users.students.edit', compact('user','classes','stages'));
 
     }
 

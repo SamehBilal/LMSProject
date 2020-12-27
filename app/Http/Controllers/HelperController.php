@@ -39,7 +39,8 @@ class HelperController extends Controller
 
     public function updateuser($data, $id)
     {
-        User::where('id',$id)->update([
+        $user = User::where('id', $id)->first();
+        $user->update([
             'username'      => $data['username'],
             'firstname'     => $data['firstname'],
             'lastname'      => $data['lastname'],
@@ -57,15 +58,13 @@ class HelperController extends Controller
 
         if(request()->hasFile('avatar'))
         {
-            
-            $user = User::findOrFail($id);
-            
+                        
             $this->deleteOldAvatar($user);
 
             $this->addNewAvatar($user);
         }
 
-        return true;
+        return $user;
     }
 
     public function restore($id)

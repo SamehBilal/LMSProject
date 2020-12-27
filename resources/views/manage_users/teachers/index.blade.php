@@ -51,7 +51,7 @@
                     <thead>
                         <tr>
                             <th>Full Name</th>
-                            <th>Position</th>
+                            <th>Course</th>
                             <th>Salary</th>
                             <th>classes</th>
                             <th>Actions</th>
@@ -61,8 +61,8 @@
                         @foreach ($items as $item)
                             <tr>
                                 <td>{{$item->fullname}}</td>
-                                <td>{{$item->staff->position}}</td>
-                                <td>{{number_format($item->staff->salary, 2)}} $</td>
+                                <td>{{$item->teacher->course->title}}</td>
+                                <td>{{number_format($item->teacher->salary, 2)}} $</td>
                                 <td>
                                     
                                 </td>

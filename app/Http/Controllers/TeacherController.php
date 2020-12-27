@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Staff;
+use App\Teacher;
+use App\Course;
+use App\Class_room;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -18,7 +20,7 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $items = User::role('teacher')->latest('updated_at')->get();
+        $items = User::role('teacher')->with('teacher.course')->latest('updated_at')->get();
         return view('manage_users.teachers.index', compact('items'));
     }
 
@@ -29,7 +31,9 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        return view('manage_users.teachers.create');
+        $classes = Class_room::all();
+        $courses = Course::all();
+        return view('manage_users.teachers.create', compact('courses','classes'));
     }
 
     /**
@@ -41,7 +45,7 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, User::rules());
-        $this->validate($request, Staff::rules());
+        $this->validate($request, Teacher::rules());
 
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
@@ -50,18 +54,21 @@ class TeacherController extends Controller
         $helperController = new HelperController();
         $user = $helperController->createuser($data);
 
-        $staff = Staff::create([
+        $teacher = Teacher::create([
             'user_id' => $user->id,
-            'position' => $data['position'],
-            'major' => $data['major'],
+            'course_id' => $data['course_id'],
             'university' => $data['university'],
             'graduation_year' => $data['graduation_year'],
             'salary' => $data['salary'],
         ]);
 
         $cv = request()->file('cv')->getClientOriginalName();
-        request()->file('cv')->storeAs('/',$staff->user_id . '/' . $cv, '');
-        $staff->update(['cv' =>  $cv]);
+        request()->file('cv')->storeAs('/',$teacher->user_id . '/' . $cv, '');
+        $teacher->update(['cv' =>  $cv]);
+        // add data to many to many relation table
+        $classes = Class_room::find($request->class_id);
+        $teacher->classes()->attach($classes);
+
 
         $user->assignRole('teacher');
 
@@ -87,8 +94,11 @@ class TeacherController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('id',$id)->with('staff')->first();
-        return view('manage_users.teachers.edit', compact('user'));
+        $classes = Class_room::all();
+        $user = User::where('id',$id)->with('Teacher')->first();
+        $courses = Course::all();
+
+        return view('manage_users.teachers.edit', compact('user','courses','classes'));
 
     }
 
@@ -102,7 +112,7 @@ class TeacherController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, User::rules($update = true, $id));
-        $this->validate($request, Staff::rules($update = true));
+        $this->validate($request, Teacher::rules($update = true));
 
 
         $data = $request->all();
@@ -112,10 +122,10 @@ class TeacherController extends Controller
         $helperController = new HelperController();
         $user = $helperController->updateuser($data, $id);
 
-
-        Staff::where('user_id',$id)->update([
-            'position' => $data['position'],
-            'major' => $data['major'],
+        $teacher = Teacher::where('user_id',$id)->first();
+        $teacher->update([
+            'user_id' => $user->id,
+            'course_id' => $data['course_id'],
             'university' => $data['university'],
             'graduation_year' => $data['graduation_year'],
             'salary' => $data['salary'],
@@ -124,9 +134,7 @@ class TeacherController extends Controller
         if(request()->hasFile('cv'))
         {
             
-            $staff = Staff::where('user_id',$id)->first();
-            
-            $cv = '/storage/'. $staff->user_id . '/' . $staff->cv;
+            $cv = '/storage/'. $teacher->user_id . '/' . $teacher->cv;
             $path = str_replace('\\','/',public_path());
             
             if(file_exists($path . $cv))
@@ -135,10 +143,16 @@ class TeacherController extends Controller
             }
 
             $cv = request()->file('cv')->getClientOriginalName();
-            request()->file('cv')->storeAs('/',$staff->user_id . '/' . $cv, '');
-            $staff->update(['cv' =>  $cv]);
+            request()->file('cv')->storeAs('/',$teacher->user_id . '/' . $cv, '');
+            $teacher->update(['cv' =>  $cv]);
 
         }
+
+        // add data to many to many relation table
+
+        $classes = Class_room::find($request->class_id);
+        $teacher->classes()->detach($classes);
+        $teacher->classes()->attach($classes);
 
         return redirect()->route('admin.teachers.index');
 
@@ -160,7 +174,7 @@ class TeacherController extends Controller
 
     public function viewdeleted()
     {
-        $items = User::onlyTrashed()->role('teacher')->latest('updated_at')->get();
+        $items = User::onlyTrashed()->role('teacher')->with('teacher.course')->latest('updated_at')->get();
         return view('manage_users.teachers.deleted', compact('items'));
     }
 

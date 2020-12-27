@@ -38,45 +38,42 @@
         <!--===================================================-->
         <div class="panel">
             <div class="panel-heading">
-                <h3 class="panel-title">Deleted Teachers List</h3>
+                <h3 class="panel-title">Classes List</h3>
             </div>
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.teachers.create')}}"><i class="demo-pli-plus"></i> Add Teacher</a>
+                <a class="btn btn-primary" href="{{route('admin.classes.create')}}"><i class="demo-pli-plus"></i> Add Class</a>
             </div>
         
             <div class="panel-body">
                 <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Full Name</th>
-                            <th>Course</th>
-                            <th>Salary</th>
-                            <th>classes</th>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Stage</th>
+                            <th>School Name</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($items as $item)
                             <tr>
-                                <td>{{$item->fullname}}</td>
-                                <td>{{$item->teacher->course->title}}</td>
-                                <td>{{number_format($item->teacher->salary, 2)}} $</td>
+                                <td>{{$item->name}}</td>
+                                <td>{{$item->code}}</td>
+                                <td>{{$item->stage->name}}</td>
+                                <td>{{$item->school_name}}</td>
+                                <td>{{$item->status}}</td>
                                 <td>
-                                    
-                                </td>
-                                <td>
-                                    <form id="delete_form3" action="{{route('admin.restore', $item->id)}}" method="POST">
+                                    <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
+                                    <a href="{{ route('admin.classes.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
+                                    <form id="delete_form3" action="{{route('admin.classes.destroy', $item->id)}}" method="POST">
                                         @csrf
-                                        <button class="btn btn-icon demo-pli-pencil icon-lg add-tooltip demo-bootbox-confirm"></button>
-                                    </form>
-                                    <form id="delete_form3" action="{{route('admin.forcedelete', $item->id)}}" method="POST">
-                                        @csrf
+                                        @method('Delete')
                                         <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>
                                     </form>
-
-
                                 </td>
                             </tr>                            
                         @endforeach

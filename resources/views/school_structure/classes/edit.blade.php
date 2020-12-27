@@ -73,105 +73,88 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.teachers.update', $user->id) }}" enctype="multipart/form-data">
+					<form method="POST" action="{{ route('admin.classes.update', $class->id) }}">
                         @csrf
-                        @method('PUT')
+						@method('PUT')
 						<div class="panel-body">
-							@include('manage_users.partials.edituser')		
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="control-label">Course</label>
-										<select name="course_id" class="form-control" required>
-											@foreach ($courses as $course)
-												<option @if ($user->teacher->course_id == $course->id) selected @endif value="{{$course->id}}">{{$course->title}}</option>
+										<label class="control-label">Name</label>
+										<input name="name" value="{{ $class->name ?? old('name') }}" type="text" class="form-control" required>
+									</div>
+									@error('name')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Code</label>
+										<input name="code" value="{{ $class->code ?? old('code') }}" type="text" class="form-control" required>
+									</div>
+									@error('code')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">School name</label>
+										<select name="school_name" class="form-control">
+											<option @if ($class->school_name == 'national') selected @endif value="national">National</option>
+											<option @if ($class->school_name == 'international') selected @endif value="international">International</option>
+										</select>
+									</div>
+									@error('school_name')
+									<span class="invalid-feedback" role="alert">
+										<strong>{{ $message }}</strong>
+									</span>
+									@enderror
+							
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Status</label>
+										<select name="status" class="form-control">
+											<option @if ($class->status == 'active') selected @endif value="active">Active</option>
+											<option @if ($class->status == 'inactive') selected @endif value="inactive">Inactive</option>
+										</select>
+									</div>
+									@error('status')
+									<span class="invalid-feedback" role="alert">
+										<strong>{{ $message }}</strong>
+									</span>
+									@enderror
+							
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label class="control-label">Stage</label>
+										<select name="stage_id" class="form-control">
+											@foreach ($stages as $stage)
+												<option @if ($class->status_id == $stage->id) selected @endif value="{{$stage->id}}">{{$stage->name}}</option>
 											@endforeach
-										</select>									
+										</select>
 									</div>
-									@error('course_id')
-										<span class="invalid-feedback" role="alert">
-											<strong>{{ $message }}</strong>
-										</span>
-									@enderror
-							
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Salary</label>
-										<input name="salary" value="{{ $user->teacher->salary ?? old('salary') }}" type="number" class="form-control" required>
-									</div>
-									@error('salary')
+									@error('stage_id')
 									<span class="invalid-feedback" role="alert">
 										<strong>{{ $message }}</strong>
 									</span>
 									@enderror
 							
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">University</label>
-										<input name="university" value="{{ $user->teacher->university ?? old('university') }}" type="text" class="form-control" required>
-									</div>
-									@error('university')
-									<span class="invalid-feedback" role="alert">
-										<strong>{{ $message }}</strong>
-									</span>
-									@enderror
-							
-								</div>
-
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Graduation Year</label>
-										<input name="graduation_year" value="{{ $user->teacher->graduation_year ?? old('graduation_year') }}" type="date" class="form-control" required>
-									</div>
-									@error('graduation_year')
-										<span class="invalid-feedback" role="alert">
-											<strong>{{ $message }}</strong>
-										</span>
-									@enderror
-							
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Classes</label>
-										<select name="class_id[]" class="form-control" multiple required>
-											@foreach ($classes as $class)
-												<option
-												@foreach ($user->teacher->classes as $classroom)
-													@if ($classroom->class_room_id  == $class->id) selected 
-													@endif
-												@endforeach
-												 value="{{$class->id}}">{{$class->name}}</option>
-											@endforeach
-										</select>									
-									</div>
-									@error('class_id')
-										<span class="invalid-feedback" role="alert">
-											<strong>{{ $message }}</strong>
-										</span>
-									@enderror
-							
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">CV</label>
-										<input name="cv" value="{{ old('cv') }}" type="file" class="form-control">
-									</div>
-									@error('cv')
-									<span class="invalid-feedback" role="alert">
-										<strong>{{ $message }}</strong>
-									</span>
-									@enderror
-							
-								</div>
-							</div>
-
+							</div>						
 						</div>
+
 						<div class="panel-footer text-right">
 							<button class="btn btn-success" type="submit">Submit</button>
 						</div>

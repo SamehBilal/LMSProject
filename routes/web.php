@@ -41,12 +41,20 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('restore/{id}', 'HelperController@restore')->name('restore');
         Route::post('forcedelete/{id}', 'HelperController@forcedelete')->name('forcedelete');
 
-        
+        // users management
         Route::resource('admins', 'AdminController');
         Route::resource('students', 'StudentController');
         Route::resource('parents', 'ParentController');
         Route::resource('staff', 'StaffController');
         Route::resource('teachers', 'TeacherController');
+        // stages management
+        Route::resource('stages', 'StageController');
+
+        // classes management
+        Route::resource('classes', 'ClassRoomController');
+
+        // courses management
+        Route::resource('courses', 'CourseController');
 
         Route::resource('roles', 'RoleController');
         Route::resource('permissions', 'PermissionController');

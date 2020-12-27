@@ -1,0 +1,30 @@
+<?php
+
+namespace App;
+
+use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Model;
+
+class Stage extends Model
+{
+    protected $fillable = [
+        'name', 'school_name', 'fees','by_id'
+    ];
+
+    public static function rules($update = false, $id = null)
+    {
+        $common = [
+            'name'        => "required",
+            'school_name'      => Rule::in(['national','international']),
+            'fees'      => "required",
+        ];
+
+        if ($update) {
+            return $common;
+        }
+
+        return array_merge($common, [
+
+        ]);
+    }
+}

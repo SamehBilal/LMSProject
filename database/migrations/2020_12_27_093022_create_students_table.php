@@ -18,10 +18,13 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('serial')->unique();
+            
             $table->unsignedBigInteger('stage_id')->nullable();
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
+
             $table->unsignedBigInteger('class_id')->nullable();
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('class_id')->references('id')->on('class_rooms')->onDelete('cascade');
+
             $table->string('document')->nullable();
             $table->set('status', ['hold', 'accepted','graduated']);
             $table->set('blood_type', ['A+', 'A-','B+','B-','AB+','AB-','O+','O-']); 
@@ -30,7 +33,7 @@ class CreateStudentsTable extends Migration
 
             $table->timestamps();
 
-            $table->index(['serial', 'created_at']);
+            $table->index(['serial', 'stage_id' , 'class_id' ,'created_at']);
 
         });
     }

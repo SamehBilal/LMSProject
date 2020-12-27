@@ -14,6 +14,14 @@ class Student extends Model
     {
         return $this->hasOne(User::class);
     }
+    public function class()
+    {
+        return $this->belongsTo(Class_room::class);
+    }
+    public function stage()
+    {
+        return $this->belongsTo(Stage::class);
+    }
     public static function rules($update = false, $id = null)
     {
         $common = [
