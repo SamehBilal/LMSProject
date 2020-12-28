@@ -120,8 +120,8 @@ class StudentController extends Controller
         $helperController = new HelperController();
         $user = $helperController->updateuser($data, $id);
 
-
-        Student::where('user_id',$id)->update([
+        $student = Student::where('user_id',$id)->first();
+        $sturent->update([
             'serial'    => $data['serial'],
             'stage_id'  => $data['stage_id'],
             'class_id'  => $data['class_id'],
@@ -132,7 +132,7 @@ class StudentController extends Controller
         if(request()->hasFile('document'))
         {
             
-            $student = Student::where('user_id',$id)->first();
+            
             
             $document = '/storage/'. $student->user_id . '/' . $student->document;
             $path = str_replace('\\','/',public_path());

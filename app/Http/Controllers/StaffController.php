@@ -112,8 +112,9 @@ class StaffController extends Controller
         $helperController = new HelperController();
         $user = $helperController->updateuser($data, $id);
 
+        $staff = Staff::where('user_id',$id)->first();
 
-        Staff::where('user_id',$id)->update([
+        $staff->update([
             'position' => $data['position'],
             'major' => $data['major'],
             'university' => $data['university'],
@@ -123,8 +124,6 @@ class StaffController extends Controller
 
         if(request()->hasFile('cv'))
         {
-            
-            $staff = Staff::where('user_id',$id)->first();
             
             $cv = '/storage/'. $staff->user_id . '/' . $staff->cv;
             $path = str_replace('\\','/',public_path());

@@ -42,7 +42,7 @@ class CourseController extends Controller
 
         $data = $request->all();
 
-        $user = Course::create([
+        Course::create([
             'title'        => $data['title'],
             'code'         => $data['code'],
             'extra_fees'   => $data['extra_fees'],

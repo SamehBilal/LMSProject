@@ -110,8 +110,7 @@
                                 <li class="active-link"><a href="index.html">Dashboard 1</a></li>                                
                             </ul>
                         </li>
-            
-                        <!--Menu list item-->
+                        @hasanyrole('Super Admin|admin')
                         <li>
                             <a href="#">
                                 <i class="demo-pli-split-vertical-2"></i>
@@ -124,7 +123,10 @@
                                 <li><a href="{{route('admin.roles.index')}}">Roles</a></li>
                                 <li><a href="{{route('admin.permissions.index')}}">Permissions</a></li>
                             </ul>
-                        </li>
+                        </li>                        
+                        @endhasanyrole
+                        <!--Menu list item-->
+
             
                         <!--Menu list item-->
                         {{-- <li>
@@ -138,91 +140,95 @@
                         </li> --}}
             
                         <li class="list-divider"></li>
-            
-                        <!--Category name-->
-                        <li class="list-header">Users</li>
-            
-                        <!--Menu list item-->
-                        <li>
-                            <a href="#">
-                                <i class="demo-pli-boot-2"></i>
-                                <span class="menu-title">Students</span>
-                                <i class="arrow"></i>
-                            </a>
-            
-                            <!--Submenu-->
-                            <ul class="collapse">
-                                <li><a href="{{route('admin.students.index')}}">All Students</a></li>
-                                <li><a href="{{route('admin.students.deleted')}}">Deleted Students</a></li>                                  
+                        @hasanyrole('Super Admin|admin')
+                            <!--Category name-->
+                            <li class="list-header">Users</li>
+                
+                            <!--Menu list item-->
+                            <li>
+                                <a href="#">
+                                    <i class="demo-pli-boot-2"></i>
+                                    <span class="menu-title">Students</span>
+                                    <i class="arrow"></i>
+                                </a>
+                
+                                <!--Submenu-->
+                                <ul class="collapse">
+                                    <li><a href="{{route('admin.students.index')}}">All Students</a></li>
+                                    <li><a href="{{route('admin.students.deleted')}}">Deleted Students</a></li>                                  
 
-                                
-                            </ul>
-                        </li>
-            
-                        <!--Menu list item-->
-                        <li>
-                            <a href="#">
-                                <i class="demo-pli-pen-5"></i>
-                                <span class="menu-title">Parents</span>
-                                <i class="arrow"></i>
-                            </a>
-            
-                            <!--Submenu-->
-                            <ul class="collapse">
-                                <li><a href="{{route('admin.parents.index')}}">All Parents</a></li>
-                                <li><a href="{{route('admin.parents.deleted')}}">Deleted Parents</a></li>                                  
-                                
-                            </ul>
-                        </li>
-            
-                        <!--Menu list item-->
-                        <li>
-                            <a href="#">
-                                <i class="demo-pli-receipt-4"></i>
-                                <span class="menu-title">Teachers</span>
-                                <i class="arrow"></i>
-                            </a>
-            
-                            <!--Submenu-->
-                            <ul class="collapse">
-                                <li><a href="{{route('admin.teachers.index')}}">All Teachers</a></li>
-                                <li><a href="{{route('admin.teachers.deleted')}}">Deleted Teachers</a></li>                                  
+                                    
+                                </ul>
+                            </li>
+                
+                            <!--Menu list item-->
+                            <li>
+                                <a href="#">
+                                    <i class="demo-pli-pen-5"></i>
+                                    <span class="menu-title">Parents</span>
+                                    <i class="arrow"></i>
+                                </a>
+                
+                                <!--Submenu-->
+                                <ul class="collapse">
+                                    <li><a href="{{route('admin.parents.index')}}">All Parents</a></li>
+                                    <li><a href="{{route('admin.parents.deleted')}}">Deleted Parents</a></li>                                  
+                                    
+                                </ul>
+                            </li>
+                
+                            <!--Menu list item-->
+                            <li>
+                                <a href="#">
+                                    <i class="demo-pli-receipt-4"></i>
+                                    <span class="menu-title">Teachers</span>
+                                    <i class="arrow"></i>
+                                </a>
+                
+                                <!--Submenu-->
+                                <ul class="collapse">
+                                    <li><a href="{{route('admin.teachers.index')}}">All Teachers</a></li>
+                                    <li><a href="{{route('admin.teachers.deleted')}}">Deleted Teachers</a></li>                                  
 
-                            </ul>
-                        </li>
-            
-                        <!--Menu list item-->
-                        <li>
-                            <a href="#">
-                                <i class="demo-pli-bar-chart"></i>
-                                <span class="menu-title">Staff</span>
-                                <i class="arrow"></i>
-                            </a>
-            
-                            <!--Submenu-->
-                            <ul class="collapse">
-                                <li><a href="{{route('admin.staff.index')}}">All Staff</a></li> 
-                                <li><a href="{{route('admin.staff.deleted')}}">Deleted Staff</a></li>                                  
-                               
-                            </ul>
-                        </li>
-            
-                        <!--Menu list item-->
-                        <li>
-                            <a href="#">
-                                <i class="demo-pli-repair"></i>
-                                <span class="menu-title">Admins</span>
-                                <i class="arrow"></i>
-                            </a>
-            
-                            <!--Submenu-->
-                            <ul class="collapse">
-                                <li><a href="{{route('admin.admins.index')}}">All Admins</a></li>
-                                <li><a href="{{route('admin.admins.deleted')}}">Deleted Admins</a></li>                                  
-                            </ul>
-                        </li>            
-                        <li class="list-divider"></li>
-            
+                                </ul>
+                            </li>
+                
+                            <!--Menu list item-->
+                            <li>
+                                <a href="#">
+                                    <i class="demo-pli-bar-chart"></i>
+                                    <span class="menu-title">Staff</span>
+                                    <i class="arrow"></i>
+                                </a>
+                
+                                <!--Submenu-->
+                                <ul class="collapse">
+                                    <li><a href="{{route('admin.staff.index')}}">All Staff</a></li> 
+                                    <li><a href="{{route('admin.staff.deleted')}}">Deleted Staff</a></li>                                  
+                                
+                                </ul>
+                            </li>
+                
+                            <!--Menu list item-->
+                            <li>
+                                <a href="#">
+                                    <i class="demo-pli-repair"></i>
+                                    <span class="menu-title">Admins</span>
+                                    <i class="arrow"></i>
+                                </a>
+                
+                                <!--Submenu-->
+                                <ul class="collapse">
+                                    <li><a href="{{route('admin.admins.index')}}">All Admins</a></li>
+                                    <li><a href="{{route('admin.admins.deleted')}}">Deleted Admins</a></li>                                  
+                                </ul>
+                            </li>      
+                            <li class="list-divider"></li>
+
+                        @endhasanyrole
+      
+                        @hasanyrole('Super Admin|admin')
+
                         <!--Category name-->
                         <li class="list-header">School Structure</li>
             
@@ -236,15 +242,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.stages.index')}}">Manage Stages</a></li>
-                                {{-- <li><a href="app-users.html">Users</a></li>
-                                <li><a href="app-users-2.html">Users 2</a></li>
-                                <li><a href="app-profile.html">Profile</a></li>
-                                <li><a href="app-calendar.html">Calendar</a></li>
-                                <li><a href="app-taskboard.html">Taskboard</a></li>
-                                <li><a href="app-chat.html">Chat</a></li>
-                                <li><a href="app-contact-us.html">Contact Us</a></li> --}}
-                                
+                                <li><a href="{{route('admin.stages.index')}}">Manage Stages</a></li>                                
                             </ul>
                         </li>
             
@@ -372,7 +370,7 @@
                                 </li>
                             </ul>
                         </li>
-
+                        @endhasanyrole
             
                         <li class="list-divider"></li>
             

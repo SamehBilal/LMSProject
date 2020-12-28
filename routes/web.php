@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
-
-
 Auth::routes();
 Route::get('/', function () {
     return view('welcome');
@@ -28,37 +24,42 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/meeting', function () {
         return view('startMeeting');
     });
-    Route::group(['prefix' => 'admin', 'as' => 'admin' . '.', 'middleware'=>['role:admin|Super Admin']], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin' . '.'], function () {
         Route::get('/', function () {
             return view('dashboard');
         });
-        Route::get('admins/deleted', 'AdminController@viewdeleted')->name('admins.deleted');
-        Route::get('parents/deleted', 'ParentController@viewdeleted')->name('parents.deleted');
-        Route::get('staff/deleted', 'StaffController@viewdeleted')->name('staff.deleted');
-        Route::get('students/deleted', 'StudentController@viewdeleted')->name('students.deleted');
-        Route::get('teachers/deleted', 'TeacherController@viewdeleted')->name('teachers.deleted');
 
-        Route::post('restore/{id}', 'HelperController@restore')->name('restore');
-        Route::post('forcedelete/{id}', 'HelperController@forcedelete')->name('forcedelete');
+        Route::group(['middleware' => ['role:Super Admin']], function () {
+            Route::get('admins/deleted', 'AdminController@viewdeleted')->name('admins.deleted');
+            Route::get('parents/deleted', 'ParentController@viewdeleted')->name('parents.deleted');
+            Route::get('staff/deleted', 'StaffController@viewdeleted')->name('staff.deleted');
+            Route::get('students/deleted', 'StudentController@viewdeleted')->name('students.deleted');
+            Route::get('teachers/deleted', 'TeacherController@viewdeleted')->name('teachers.deleted');
+    
+            Route::post('restore/{id}', 'HelperController@restore')->name('restore');
+            Route::post('forcedelete/{id}', 'HelperController@forcedelete')->name('forcedelete');
 
-        // users management
-        Route::resource('admins', 'AdminController');
-        Route::resource('students', 'StudentController');
-        Route::resource('parents', 'ParentController');
-        Route::resource('staff', 'StaffController');
-        Route::resource('teachers', 'TeacherController');
-        // stages management
-        Route::resource('stages', 'StageController');
+            Route::resource('roles', 'RoleController');
+            Route::resource('permissions', 'PermissionController');
+        });
+ 
 
-        // classes management
-        Route::resource('classes', 'ClassRoomController');
+        Route::group(['middleware' => ['role:Super Admin|admin']], function () {
+            // users management
+            Route::resource('admins', 'AdminController');
+            Route::resource('students', 'StudentController');
+            Route::resource('parents', 'ParentController');
+            Route::resource('staff', 'StaffController');
+            Route::resource('teachers', 'TeacherController');
+            // stages management
+            Route::resource('stages', 'StageController');
 
-        // courses management
-        Route::resource('courses', 'CourseController');
+            // classes management
+            Route::resource('classes', 'ClassRoomController');
 
-        Route::resource('roles', 'RoleController');
-        Route::resource('permissions', 'PermissionController');
-
+            // courses management
+            Route::resource('courses', 'CourseController');
+        });
 
         Route::get('/delete/{id}', 'zoomController@deleteMeeting');
         Route::get('/create_meeting', function () {

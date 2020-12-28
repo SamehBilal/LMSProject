@@ -43,7 +43,7 @@ class ClassRoomController extends Controller
 
         $data = $request->all();
 
-        $user = Class_room::create([
+        Class_room::create([
             'name'          => $data['name'],
             'code'          => $data['code'],
             'school_name'   => $data['school_name'],
