@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Activity;
 use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
+    use  RecordsActivity;
     protected $fillable = [
         'user_id', 'position', 'address','major','university','graduation_year','cv','salary'
     ];

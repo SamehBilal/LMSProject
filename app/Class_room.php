@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Activity;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 
 class Class_room extends Model
 {
+    use  RecordsActivity;
     protected $fillable = [
         'name', 'code','school_name', 'status','stage_id','by_id'
     ];

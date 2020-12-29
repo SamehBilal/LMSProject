@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Activity;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+    use  RecordsActivity;
     protected $fillable = [
         'title', 'code','extra_fees', 'stage_id','by_id'
     ];

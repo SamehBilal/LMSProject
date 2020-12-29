@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Activity;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+    use  RecordsActivity;
     protected $fillable = [
         'user_id', 'serial' , 'stage_id', 'class_id','document','status','blood_type'
     ];

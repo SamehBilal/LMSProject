@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Activity;
 use Illuminate\Database\Eloquent\Model;
 
 class IsParent extends Model
 {
+    use  RecordsActivity;
     protected $table = 'parents';
 
     public $timestamps = false;
