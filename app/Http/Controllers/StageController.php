@@ -44,7 +44,6 @@ class StageController extends Controller
             'name'          => $data['name'],
             'school_name'   => $data['school_name'],
             'fees'          => $data['fees'],
-            'by_id'         => auth()->user()->id,
         ]);
 
         return redirect()->route('admin.stages.index');

@@ -68,112 +68,15 @@
 			<div class="col-sm-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Create New Class</h3>
+						<h3 class="panel-title">Create New Admin</h3>
 					</div>
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.classes.store') }}">
+					<form method="POST" action="{{ route('admin.admins.store') }}" enctype="multipart/form-data">
 						@csrf
 						<div class="panel-body">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Name</label>
-										<input name="name" value="{{ old('name') }}" type="text" class="form-control" required>
-									</div>
-									@error('name')
-										<span class="invalid-feedback" role="alert">
-											<strong>{{ $message }}</strong>
-										</span>
-									@enderror
-							
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Code</label>
-										<input name="code" value="{{ old('code') }}" type="text" class="form-control" required>
-									</div>
-									@error('code')
-										<span class="invalid-feedback" role="alert">
-											<strong>{{ $message }}</strong>
-										</span>
-									@enderror
-							
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">School name</label>
-										<select name="school_name" class="form-control">
-											<option value="national">National</option>
-											<option value="international">International</option>
-										</select>
-									</div>
-									@error('school_name')
-									<span class="invalid-feedback" role="alert">
-										<strong>{{ $message }}</strong>
-									</span>
-									@enderror
-							
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Status</label>
-										<select name="status" class="form-control">
-											<option value="active">Active</option>
-											<option value="inactive">Inactive</option>
-										</select>
-									</div>
-									@error('status')
-									<span class="invalid-feedback" role="alert">
-										<strong>{{ $message }}</strong>
-									</span>
-									@enderror
-							
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="control-label">Stage</label>
-										<select name="stage_id" class="form-control">
-											@foreach ($stages as $stage)
-												<option value="{{$stage->id}}">{{$stage->name}}</option>
-											@endforeach
-										</select>
-									</div>
-									@error('stage_id')
-									<span class="invalid-feedback" role="alert">
-										<strong>{{ $message }}</strong>
-									</span>
-									@enderror
-							
-								</div>
-							</div>
-							
-							<div class="row">
-								@for ($i = 1; $i < 7; $i++)
-									<div class="col-sm-2">
-										<div class="form-group">
-											<label class="control-label">Session {{$i}}</label>
-											<select name="course_id_{{$i}}" class="form-control" required>
-												<option>... </option>
-												@foreach ($courses as $course)
-													<option value="{{$course->id}}">{{$course->title}}</option>
-												@endforeach
-											</select>
-
-										</div>
-										@error('course_id_' . $i)
-										<span class="invalid-feedback" role="alert">
-											<strong>{{ $message }}</strong>
-										</span>
-										@enderror
-									</div>
-								@endfor
-							</div>	
+							@include('manage_users.partials.createuser')							
 						</div>
 						<div class="panel-footer text-right">
 							<button class="btn btn-success" type="submit">Submit</button>

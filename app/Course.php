@@ -9,7 +9,7 @@ class Course extends Model
 {
     use  RecordsActivity;
     protected $fillable = [
-        'title', 'code','extra_fees', 'stage_id','by_id'
+        'title', 'code','extra_fees', 'stage_id'
     ];
 
     public function stage()

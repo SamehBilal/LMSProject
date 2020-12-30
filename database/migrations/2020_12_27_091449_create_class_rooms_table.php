@@ -21,7 +21,6 @@ class CreateClassRoomsTable extends Migration
             $table->set('status', ['active','inactive']);
             $table->unsignedBigInteger('stage_id')->nullable();
             $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
-            $table->integer('by_id')->unsigned();
             $table->timestamps();
         });
     }

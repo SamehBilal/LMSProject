@@ -10,7 +10,7 @@ class Stage extends Model
 {
     use  RecordsActivity;
     protected $fillable = [
-        'name', 'school_name', 'fees','by_id'
+        'name', 'school_name', 'fees'
     ];
 
     public static function rules($update = false, $id = null)

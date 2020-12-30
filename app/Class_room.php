@@ -10,7 +10,7 @@ class Class_room extends Model
 {
     use  RecordsActivity;
     protected $fillable = [
-        'name', 'code','school_name', 'status','stage_id','by_id'
+        'name', 'code','school_name', 'status','stage_id'
     ];
 
     public function stage()

@@ -47,7 +47,6 @@ class CourseController extends Controller
             'code'         => $data['code'],
             'extra_fees'   => $data['extra_fees'],
             'stage_id'     => $data['stage_id'],
-            'by_id'        => auth()->user()->id,
         ]);
 
         return redirect()->route('admin.courses.index');

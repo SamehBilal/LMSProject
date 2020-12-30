@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Class_room;
+use App\Course;
 use App\Stage;
+use App\Session;
 use Illuminate\Http\Request;
 
 class ClassRoomController extends Controller
@@ -27,8 +29,9 @@ class ClassRoomController extends Controller
     public function create()
     {
         $stages = Stage::all();
+        $courses = Course::all();
 
-        return view('school_structure.classes.create', compact('stages'));
+        return view('school_structure.classes.create', compact('stages','courses'));
     }
 
     /**
@@ -39,18 +42,29 @@ class ClassRoomController extends Controller
      */
     public function store(Request $request)
     {
+            //03:30
+        $start_time = ['09:00','10:00','11:00','12:00','13:00','14:00'];
+        $end_time   = ['10:00','11:00','12:00','13:00','14:00','15:00'];
         $this->validate($request, Class_room::rules());
 
         $data = $request->all();
 
-        Class_room::create([
+        $class = Class_room::create([
             'name'          => $data['name'],
             'code'          => $data['code'],
             'school_name'   => $data['school_name'],
             'status'        => $data['status'],
-            'stage_id'     => $data['stage_id'],
-            'by_id'         => auth()->user()->id,
+            'stage_id'      => $data['stage_id'],
         ]);
+        for ($i=0; $i < 6 ; $i++) { 
+            $y = $i + 1;
+            Session::create([
+                'class_id'  => $class->id,
+                'course_id' => $data['course_id_' . $y],
+                'start'     => $start_time[$i],
+                'end'       => $end_time[$i],
+            ]);
+        }
 
         return redirect()->route('admin.classes.index');
     }

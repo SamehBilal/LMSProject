@@ -275,6 +275,22 @@
                                 
                             </ul>
                         </li>
+
+                        <!--Menu list item-->
+                        <li>
+                            <a href="#">
+                                <i class="demo-pli-mail"></i>
+                                <span class="menu-title">Attendance</span>
+                                <i class="arrow"></i>
+                            </a>
+            
+                            <!--Submenu-->
+                            <ul class="collapse">
+                                <li><a href="{{route('admin.attendance.index')}}">Students Attendance</a></li>
+                                {{-- <li><a href="{{route('admin.attendance.index')}}">Staff Attendance</a></li> --}}
+                                <li><a href="{{route('admin.attendance.create')}}">Take Attendance</a></li>
+                            </ul>
+                        </li>
             
                         <!--Menu list item-->
                         <li>

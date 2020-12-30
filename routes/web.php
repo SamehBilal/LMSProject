@@ -59,6 +59,9 @@ Route::group(['middleware' => ['auth']], function () {
 
             // courses management
             Route::resource('courses', 'CourseController');
+
+            // Attendance
+            Route::resource('attendance', 'AttendanceController');
         });
 
         Route::get('/delete/{id}', 'zoomController@deleteMeeting');

@@ -18,7 +18,6 @@ class CreateStagesTable extends Migration
             $table->string('name');
             $table->set('school_name', ['national','international']);
             $table->string('fees');
-            $table->integer('by_id')->unsigned();
             $table->timestamps();
         });
     }
