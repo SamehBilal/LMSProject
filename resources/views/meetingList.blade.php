@@ -51,7 +51,9 @@
                                     <td class="column4" style="text-align: center !important">{{$item->duration}}</td>
                                     <td class="column6">
                                         <div>
-                                            <a href="/meeting?nickname={{$user->name}}&meetingId={{$item->id}}&password={{substr($item->join_url, strpos($item->join_url, '=') + 1)}}&role={{$role}}" target="_blank">Join</a>
+											<a href="{{route('start-meeting', $item->id)}}" target="_blank">Join</a>
+											<a href="/meeting?nickname={{$user->username}}&meetingId={{$item->id}}&password={{substr($item->join_url, strpos($item->join_url, '=') + 1)}}&role={{$role}}" target="_blank">Join</a>
+
 											@can('delete meeting')
 												/
 												<a style="color: rgb(206, 114, 114) !important" href="/delete/{{$item->id}}">Delete</a>

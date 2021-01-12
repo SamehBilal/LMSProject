@@ -9,7 +9,7 @@ class Session extends Model
 {
     use  RecordsActivity;
     protected $fillable = [
-        'class_id', 'course_id', 'start','end'
+        'class_id', 'course_id', 'day', 'start','end'
     ];
 
     public function course()

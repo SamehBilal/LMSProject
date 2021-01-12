@@ -32,7 +32,7 @@
 
 	<div class="container-contact100">
 		<div class="wrap-contact100">
-            <form action="/" method="POST" class="contact100-form validate-form">
+            <form action="/admin/create_meeting" method="POST" class="contact100-form validate-form">
                 @csrf
 				<span class="contact100-form-title">
 					Create a Meeting

@@ -19,6 +19,7 @@ class CreateSessionsTable extends Migration
             $table->foreign('class_id')->references('id')->on('class_rooms')->onDelete('cascade');
             $table->unsignedBigInteger('course_id')->nullable();
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->set('day', ['saterday','sunday','monday','tuesday','wednesday','thursday']);
             $table->time('start');
             $table->time('end');
             $table->timestamps();

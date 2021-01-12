@@ -153,27 +153,6 @@
 								</div>
 							</div>
 							
-							<div class="row">
-								@for ($i = 1; $i < 7; $i++)
-									<div class="col-sm-2">
-										<div class="form-group">
-											<label class="control-label">Session {{$i}}</label>
-											<select name="course_id_{{$i}}" class="form-control" required>
-												<option>... </option>
-												@foreach ($courses as $course)
-													<option value="{{$course->id}}">{{$course->title}}</option>
-												@endforeach
-											</select>
-
-										</div>
-										@error('course_id_' . $i)
-										<span class="invalid-feedback" role="alert">
-											<strong>{{ $message }}</strong>
-										</span>
-										@enderror
-									</div>
-								@endfor
-							</div>	
 						</div>
 						<div class="panel-footer text-right">
 							<button class="btn btn-success" type="submit">Submit</button>

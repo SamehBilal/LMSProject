@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Class_room;
-use App\Course;
 use App\Stage;
 use App\Session;
 use Illuminate\Http\Request;
@@ -29,9 +28,8 @@ class ClassRoomController extends Controller
     public function create()
     {
         $stages = Stage::all();
-        $courses = Course::all();
 
-        return view('school_structure.classes.create', compact('stages','courses'));
+        return view('school_structure.classes.create', compact('stages'));
     }
 
     /**
@@ -42,9 +40,7 @@ class ClassRoomController extends Controller
      */
     public function store(Request $request)
     {
-            //03:30
-        $start_time = ['09:00','10:00','11:00','12:00','13:00','14:00'];
-        $end_time   = ['10:00','11:00','12:00','13:00','14:00','15:00'];
+
         $this->validate($request, Class_room::rules());
 
         $data = $request->all();
@@ -56,15 +52,7 @@ class ClassRoomController extends Controller
             'status'        => $data['status'],
             'stage_id'      => $data['stage_id'],
         ]);
-        for ($i=0; $i < 6 ; $i++) { 
-            $y = $i + 1;
-            Session::create([
-                'class_id'  => $class->id,
-                'course_id' => $data['course_id_' . $y],
-                'start'     => $start_time[$i],
-                'end'       => $end_time[$i],
-            ]);
-        }
+
 
         return redirect()->route('admin.classes.index');
     }
@@ -89,6 +77,9 @@ class ClassRoomController extends Controller
     public function edit($id)
     {
         $class = Class_room::findOrFail($id);
+        // $class = Class_room::where('id',$id)->first();
+        // dd($class->sessions->isEmpty());
+
         $stages = Stage::all();
         return view('school_structure.classes.edit', compact('class','stages'));
     }

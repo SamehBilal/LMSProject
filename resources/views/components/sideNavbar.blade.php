@@ -286,9 +286,9 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.attendance.index')}}">Students Attendance</a></li>
+                                {{-- <li><a href="{{route('admin.attendance.index')}}">Students Attendance</a></li> --}}
                                 {{-- <li><a href="{{route('admin.attendance.index')}}">Staff Attendance</a></li> --}}
-                                <li><a href="{{route('admin.attendance.create')}}">Take Attendance</a></li>
+                                {{-- <li><a href="{{route('admin.attendance.create')}}">Take Attendance</a></li> --}}
                             </ul>
                         </li>
             

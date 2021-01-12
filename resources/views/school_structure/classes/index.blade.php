@@ -55,6 +55,7 @@
                             <th>Stage</th>
                             <th>School Name</th>
                             <th>Status</th>
+                            <th>Schedual</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -66,6 +67,13 @@
                                 <td>{{$item->stage->name}}</td>
                                 <td>{{$item->school_name}}</td>
                                 <td>{{$item->status}}</td>
+                                <td>
+                                    @if ($item->sessions->isEmpty())
+                                        <a class="btn btn-success" href="{{route('admin.session.create',$item->id)}}"><i class="demo-pli-plus"></i> Add Class Schedual</a>
+                                    @else    
+                                        <a class="btn btn-primary" href="{{route('admin.session.edit', $item->id)}}"><i class="demo-pli-plus"></i> Edit Class Schedual</a>
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
                                     <a href="{{ route('admin.classes.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>

@@ -20,10 +20,14 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/meetings-list', 'zoomController@meetingsList');
+    Route::get('/meetings_list', 'zoomController@meetingsList');
+    Route::get('/startMeeting/{id}', 'zoomController@startmeeting')->name('start-meeting');
     Route::get('/meeting', function () {
         return view('startMeeting');
     });
+    // Route::get('/meeting', function () {
+    //     return view('startMeeting');
+    // });
     Route::group(['prefix' => 'admin', 'as' => 'admin' . '.'], function () {
         Route::get('/', function () {
             return view('dashboard');
@@ -56,19 +60,22 @@ Route::group(['middleware' => ['auth']], function () {
 
             // classes management
             Route::resource('classes', 'ClassRoomController');
-
+            Route::get('session/create/{class}', 'SessionController@create')->name('session.create');
+            Route::post('session/store', 'SessionController@store')->name('session.store');
+            Route::get('session/{class}/edit', 'SessionController@edit')->name('session.edit');
+            Route::put('session/update', 'SessionController@update')->name('session.update');
             // courses management
             Route::resource('courses', 'CourseController');
 
             // Attendance
-            Route::resource('attendance', 'AttendanceController');
+            // Route::resource('attendance', 'AttendanceController');
         });
 
         Route::get('/delete/{id}', 'zoomController@deleteMeeting');
         Route::get('/create_meeting', function () {
             return view('create_meeting');
         });
-        Route::post('/', 'zoomController@createMeeting');
+        Route::post('/create_meeting', 'zoomController@createMeeting');
     });
 
 

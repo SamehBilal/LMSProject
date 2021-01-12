@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
+use App\Session;
 use App\Attendance;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,9 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        $classes = Class_room::all();
+        return view('attendance.create',compact('classes'));
+
     }
 
     /**
@@ -24,7 +28,7 @@ class AttendanceController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,7 +39,7 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -55,9 +59,9 @@ class AttendanceController extends Controller
      * @param  \App\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function edit(Attendance $attendance)
+    public function edit($id)
     {
-        //
+
     }
 
     /**

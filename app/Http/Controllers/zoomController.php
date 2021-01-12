@@ -31,7 +31,7 @@ class zoomController extends Controller
                 'waiting_room' => 0,
                 'join_before_host' => 0,
                 'audio' => 'both',
-                'auto_recording' => 'none',
+                'auto_recording' => 'local',
                 'approval_type' => 0,
                 'mute_upon_entry' => 0
             ]
@@ -39,6 +39,34 @@ class zoomController extends Controller
         $user->meetings()->save($meeting);
 
         return redirect('/meetings-list');
+    }
+
+    public function startmeeting($id)
+    {
+        //check if user student or teacher
+        $user = auth()->user();
+
+        // assign role
+
+        //update meeting zoom api keys
+
+        
+        /**update zoom config file
+
+        config(['zoom.api_key' => 'value here']);
+
+        config(['zoom.api_secret' => 'value here']);
+        */
+
+        $item = Zoom::meeting()->find($id);
+        $link = '/meeting?nickname=' . $user->username . 
+                '&meetingId=' . $item->id .
+                '&password=' . 
+                '&role=' . 1; 
+
+        // update zoom account status to unavailable
+        
+        return redirect($link);
     }
 
     public function meetingsList(Request $request)

@@ -67,39 +67,40 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="panel">
-					<div class="col-sm-6 toolbar-left">
-						<button id="demo-btn-addrow" class="btn btn-success btn-labeled"><i class="btn-label demo-pli-add"></i> Add New Attendance</button>
-					</div>
-					<div class="col-sm-6 toolbar-right text-right">
-						<form action="{{ url('attendances') }}" method="GET" >
-							<div class="select" >
-								<select class="selectpicker" data-live-search="true" name="student">
-									<option value="" selected>Choose Class...</option>
-									@foreach($classes as $class)
-										<option value="{{$class->id}}" >{{$class->name}}</option>
-									@endforeach
-								</select>
-								<select class="selectpicker" data-live-search="true" name="month">
-									<option value="" selected>Choose Session...</option>
-									<option value="January" >January</option>
-									<option value="February" >February</option>
-									<option value="March" >March</option>
-									<option value="April" >April</option>
-									<option value="May" >May</option>
-									<option value="June" >June</option>
-								</select>
-		
-							</div>
-							<button class="btn btn-default">Filter</button>
-						</form>
+					<div class="panel-heading">
+						<h3 class="panel-title">Create New Schedual</h3>
 					</div>
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.admins.store') }}" enctype="multipart/form-data">
-						@csrf
+					<form method="POST" action="{{ route('admin.session.store') }}">
+                        @csrf
+                        <input type="hidden" value="{{$class_id}}" name="class_id">
 						<div class="panel-body">
-							@include('manage_users.partials.createuser')							
+                            @foreach ($days as $day)
+                                <div class="row">
+                                    <h4>{{ucfirst($day)}}</h4>
+                                    <hr>
+                                    @for ($i = 1; $i < 7; $i++)
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label class="control-label">Session {{$i}}</label>
+                                                <select name="{{$day}}_{{$i}}" class="form-control" required>
+                                                    @foreach ($courses as $course)
+                                                        <option value="{{$course->id}}">{{$course->title}}</option>
+                                                    @endforeach
+                                                </select>
+
+                                            </div>
+                                            @error($day . '_' . $i)
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    @endfor
+                                </div>	
+                            @endforeach							
 						</div>
 						<div class="panel-footer text-right">
 							<button class="btn btn-success" type="submit">Submit</button>

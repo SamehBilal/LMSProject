@@ -23,6 +23,11 @@ class Class_room extends Model
         return $this->belongsToMany(Teacher::class);
     }
 
+    public function sessions()
+    {
+        return $this->hasMany(Session::class , "class_id" , "id");
+    }
+
     public static function rules($update = false, $id = null)
     {
         $common = [
