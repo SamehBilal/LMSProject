@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Class_room;
-use App\Stage;
-use App\Session;
+use App\Models\Class_room;
+use App\Models\Stage;
+use App\Models\Session;
 use Illuminate\Http\Request;
 
 class ClassRoomController extends Controller
@@ -54,7 +54,7 @@ class ClassRoomController extends Controller
         ]);
 
 
-        return redirect()->route('admin.classes.index');
+        return redirect()->route('dashboard.classes.index');
     }
 
     /**
@@ -77,9 +77,6 @@ class ClassRoomController extends Controller
     public function edit($id)
     {
         $class = Class_room::findOrFail($id);
-        // $class = Class_room::where('id',$id)->first();
-        // dd($class->sessions->isEmpty());
-
         $stages = Stage::all();
         return view('school_structure.classes.edit', compact('class','stages'));
     }
@@ -105,7 +102,7 @@ class ClassRoomController extends Controller
             'stage_id'     => $data['stage_id'],
         ]);
 
-        return redirect()->route('admin.classes.index');
+        return redirect()->route('dashboard.classes.index');
     }
 
     /**
@@ -116,6 +113,7 @@ class ClassRoomController extends Controller
      */
     public function destroy($id)
     {
+        Session::where('class_id',$request->class_id)->delete();
         Class_room::destroy($id);
         
 

@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.courses.store') }}">
+					<form method="POST" action="{{ route('dashboard.courses.store') }}">
 						@csrf
 						<div class="panel-body">
 							<div class="row">

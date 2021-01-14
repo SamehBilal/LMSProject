@@ -43,7 +43,7 @@
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.courses.create')}}"><i class="demo-pli-plus"></i> Add Course</a>
+                <a class="btn btn-primary" href="{{route('dashboard.courses.create')}}"><i class="demo-pli-plus"></i> Add Course</a>
             </div>
         
             <div class="panel-body">
@@ -66,8 +66,8 @@
                                 <td>{{$item->school_name}}</td>
                                 <td>
                                     <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
-                                    <a href="{{ route('admin.courses.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
-                                    <form id="delete_form3" action="{{route('admin.courses.destroy', $item->id)}}" method="POST">
+                                    <a href="{{ route('dashboard.courses.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
+                                    <form id="delete_form3" action="{{route('dashboard.courses.destroy', $item->id)}}" method="POST">
                                         @csrf
                                         @method('Delete')
                                         <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>

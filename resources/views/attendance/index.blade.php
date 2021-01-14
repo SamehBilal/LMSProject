@@ -41,55 +41,158 @@
                 <h3 class="panel-title">Admins List</h3>
             </div>
         
-            <div id="demo-custom-toolbar2" class="table-toolbar-left">
-                {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.admins.create')}}"><i class="demo-pli-plus"></i> Add Admin</a>
-            </div>
-        
-            <div class="panel-body">
-                <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>User Name</th>
-                            <th>Email</th>
-                            <th>Roles</th>
-                            <th>Extra Permissions</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($items as $item)
-                            <tr>
-                                <td>{{$item->fullname}}</td>
-                                <td>{{$item->username}}</td>
-                                <td>{{$item->email}}</td>
-                                <td>
-                                    @foreach ($item->getRoleNames() as $role)
-                                    <span class="label label-table label-dark">{{$role}}</span>                                        
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @foreach ($item->getAllPermissions() as $permission)
-                                        <span class="label label-table label-success">{{$permission->name}}</span>                                        
-                                    @endforeach
-                                </td>
-                                <td>
-                                    <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
-                                    <a href="{{ route('admin.admins.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
-                                    <form id="delete_form3" action="{{route('admin.admins.destroy', $item->id)}}" method="POST">
-                                        @csrf
-                                        @method('Delete')
-                                        <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>
-                                    </form>
+            <div class="row">
+                <!-- Student Attendence Search Area Start Here -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Student Attendence</h3>
+                                </div>
+                            </div>
+                            <form class="new-added-form">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Select Class</label>
+                                        <select name="class"  class="select2">
+                                            <option value="">Select Class</option>
+                                            @foreach ($classes as $class)
+                                                <option {{ request()->input('class') == $class->name ? 'selected' : '' }} value="{{$class->name}}">{{$class->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Select Month</label>
+                                        <select name="month" class="select2">
+                                            <option value="0">Select Month</option>
+                                            <option {{ request()->input('month') == 'January' ? 'selected' : '' }}  value="January">January</option>
+                                            <option {{ request()->input('month') == 'February' ? 'selected' : '' }} value="February">February</option>
+                                            <option {{ request()->input('month') == 'March' ? 'selected' : '' }}    value="March">March</option>
+                                            <option {{ request()->input('month') == 'April' ? 'selected' : '' }}    value="April">April</option>
+                                            <option {{ request()->input('month') == 'May' ? 'selected' : '' }}      value="May">May</option>
+                                            <option {{ request()->input('month') == 'June' ? 'selected' : '' }}     value="June">June</option>
+                                            <option {{ request()->input('month') == 'July' ? 'selected' : '' }}     value="July">July</option>
+                                            <option {{ request()->input('month') == 'August' ? 'selected' : '' }}   value="August">August</option>
+                                            <option {{ request()->input('month') == 'September' ? 'selected' : '' }}value="September">September</option>
+                                            <option {{ request()->input('month') == 'October' ? 'selected' : '' }}  value="October">October</option>
+                                            <option {{ request()->input('month') == 'November' ? 'selected' : '' }} value="November">November</option>
+                                            <option {{ request()->input('month') == 'December' ? 'selected' : '' }} value="December">December</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 form-group mg-t-8">
+                                        <button type="submit" class="btn btn-success">Search</button>
+                                        <a class="btn btn-danger" href="{{route('dashboard.attendance.index')}}">Reset</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Student Attendence Search Area End Here -->
+                <!-- Student Attendence Area Start Here -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @if (request()->input('class') && request()->input('month'))
+                                <div class="heading-layout1">
+                                    <div class="item-title">
+                                        <h3>Attendence Sheet Of Class {{request()->input('class')}}:{{request()->input('month')}}</h3>
+                                    </div>
+                                </div>
 
+                                @if($records !== null && $records->isNotEmpty())
+                                    <div class="table-responsive">
+                                        <table class="table bs-table table-striped table-bordered text-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">Students</th>
+                                                    <th>1</th>
+                                                    <th>2</th>
+                                                    <th>3</th>
+                                                    <th>4</th>
+                                                    <th>5</th>
+                                                    <th>6</th>
+                                                    <th>7</th>
+                                                    <th>8</th>
+                                                    <th>9</th>
+                                                    <th>10</th>
+                                                    <th>11</th>
+                                                    <th>12</th>
+                                                    <th>13</th>
+                                                    <th>14</th>
+                                                    <th>15</th>
+                                                    <th>16</th>
+                                                    <th>17</th>
+                                                    <th>18</th>
+                                                    <th>19</th>
+                                                    <th>20</th>
+                                                    <th>21</th>
+                                                    <th>22</th>
+                                                    <th>23</th>
+                                                    <th>24</th>
+                                                    <th>25</th>
+                                                    <th>26</th>
+                                                    <th>27</th>
+                                                    <th>28</th>
+                                                    <th>29</th>
+                                                    <th>30</th>
+                                                    <th>31</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($records as $key => $record)
+                                                <tr>
+                                                    
+                                                        <td class="text-left">{{$key}}</td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-times text-danger"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td>-</td>
+                                                        <td><i class="fa fa-times text-danger"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-times text-danger"></i></td>
+                                                        <td>-</td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-times text-danger"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td>-</td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-times text-danger"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td>-</td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td><i class="fa fa-check text-success"></i></td>
+                                                        <td>-</td>
 
-                                </td>
-                            </tr>                            
-                        @endforeach
+                                                    
+                                                </tr>
+                                                @endforeach
 
-                    </tbody>
-                </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <p class="text-center">There are no available records.</p>
+                                @endif
+
+                            @endif
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--===================================================-->

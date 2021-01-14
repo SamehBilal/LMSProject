@@ -15,7 +15,8 @@
 
     <!--Open Sans Font [ OPTIONAL ]-->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
-
+    <!--Font Awesome [ OPTIONAL ]-->
+    <link href="{{asset('plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
 
     <!--Bootstrap Stylesheet [ REQUIRED ]-->
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">

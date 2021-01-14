@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ManageUsers;
 
+use App\Http\Controllers\Helpers\HelperController;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
-use App\Stage;
-use App\Student;
-use App\Class_room;
+use App\Models\User;
+use App\Models\Stage;
+use App\Models\Student;
+use App\Models\Class_room;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -69,7 +71,7 @@ class StudentController extends Controller
 
         $user->assignRole('student');
 
-        return redirect()->route('admin.students.index');
+        return redirect()->route('dashboard.students.index');
     }
 
     /**
@@ -121,7 +123,7 @@ class StudentController extends Controller
         $user = $helperController->updateuser($data, $id);
 
         $student = Student::where('user_id',$id)->first();
-        $sturent->update([
+        $student->update([
             'serial'    => $data['serial'],
             'stage_id'  => $data['stage_id'],
             'class_id'  => $data['class_id'],
@@ -131,8 +133,6 @@ class StudentController extends Controller
             ]);
         if(request()->hasFile('document'))
         {
-            
-            
             
             $document = '/storage/'. $student->user_id . '/' . $student->document;
             $path = str_replace('\\','/',public_path());
@@ -147,7 +147,7 @@ class StudentController extends Controller
             $student->update(['document' =>  $document]);
 
         }
-        return redirect()->route('admin.students.index');
+        return redirect()->route('dashboard.students.index');
 
     }
 

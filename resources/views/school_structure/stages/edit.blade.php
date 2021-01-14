@@ -68,12 +68,12 @@
 			<div class="col-sm-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Edit Admin</h3>
+						<h3 class="panel-title">Edit Stage</h3>
 					</div>
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.stages.update', $stage->id) }}">
+					<form method="POST" action="{{ route('dashboard.stages.update', $stage->id) }}">
                         @csrf
                         @method('PUT')
 						<div class="panel-body">

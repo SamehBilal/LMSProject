@@ -1,6 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Traits;
+
+use App\Models\Activity;
 
 trait RecordsActivity
 {

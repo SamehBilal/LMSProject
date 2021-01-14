@@ -43,7 +43,7 @@
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.classes.create')}}"><i class="demo-pli-plus"></i> Add Class</a>
+                <a class="btn btn-primary" href="{{route('dashboard.classes.create')}}"><i class="demo-pli-plus"></i> Add Class</a>
             </div>
         
             <div class="panel-body">
@@ -69,15 +69,15 @@
                                 <td>{{$item->status}}</td>
                                 <td>
                                     @if ($item->sessions->isEmpty())
-                                        <a class="btn btn-success" href="{{route('admin.session.create',$item->id)}}"><i class="demo-pli-plus"></i> Add Class Schedual</a>
+                                        <a class="btn btn-success" href="{{route('dashboard.session.create',$item->id)}}"><i class="demo-pli-plus"></i> Add Class Schedual</a>
                                     @else    
-                                        <a class="btn btn-primary" href="{{route('admin.session.edit', $item->id)}}"><i class="demo-pli-plus"></i> Edit Class Schedual</a>
+                                        <a class="btn btn-primary" href="{{route('dashboard.session.edit', $item->id)}}"><i class="demo-pli-plus"></i> Edit Class Schedual</a>
                                     @endif
                                 </td>
                                 <td>
                                     <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
-                                    <a href="{{ route('admin.classes.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
-                                    <form id="delete_form3" action="{{route('admin.classes.destroy', $item->id)}}" method="POST">
+                                    <a href="{{ route('dashboard.classes.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
+                                    <form id="delete_form3" action="{{route('dashboard.classes.destroy', $item->id)}}" method="POST">
                                         @csrf
                                         @method('Delete')
                                         <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>

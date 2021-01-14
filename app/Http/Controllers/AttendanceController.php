@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Course;
-use App\Session;
-use App\Attendance;
+use App\Models\Class_room;
+use App\Models\Course;
+use App\Models\Student;
+use App\Models\Session;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -14,10 +16,35 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $records = null;
         $classes = Class_room::all();
-        return view('attendance.create',compact('classes'));
+        $count = 0;
+
+        if($request->filled(['class', 'month'])) {
+
+            $class = Class_room::where('name',$request->input('class'))->first();
+            $month = $request->input('month');
+            $updatedrecords = [];
+            $records = Attendance::where('class_id',$class->id)
+                                 ->where('month',$month)
+                                 ->get()
+                                 ->groupBy('student_id');
+            dd($records);
+            foreach($records as $key => $record){
+                $student = Student::find($key);
+                $value = $student->user->fullname;
+                $arr[] = $value;
+            }
+
+            $count = count($records);
+        }
+        return view('attendance.index',compact('records','classes','count'));
+
+        // $request->merge([
+        //     'user_id' => auth()->id()
+        // ]);
 
     }
 

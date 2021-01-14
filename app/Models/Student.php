@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Activity;
+use App\Traits\RecordsActivity;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +14,7 @@ class Student extends Model
     ];
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(User::class  , "id" , "user_id");
     }
     public function class()
     {

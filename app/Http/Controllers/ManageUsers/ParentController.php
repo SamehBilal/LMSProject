@@ -1,25 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ManageUsers;
 
+use App\Http\Controllers\Helpers\HelperController;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
-use App\Staff;
+use App\Models\User;
+use App\Models\IsParent;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class StaffController extends Controller
+class ParentController extends Controller
 {
-    /**
+   /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $items = User::role('staff')->latest('updated_at')->get();
-        return view('manage_users.staff.index', compact('items'));
+        $items = User::role('parent')->with('parentTo')->latest('updated_at')->get();
+        return view('manage_users.parents.index', compact('items'));
     }
 
     /**
@@ -29,7 +31,8 @@ class StaffController extends Controller
      */
     public function create()
     {
-        return view('manage_users.staff.create');
+        $students = User::role('student')->get();
+        return view('manage_users.parents.create', compact('students'));
     }
 
     /**
@@ -41,8 +44,6 @@ class StaffController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, User::rules());
-        $this->validate($request, Staff::rules());
-
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
 
@@ -50,22 +51,18 @@ class StaffController extends Controller
         $helperController = new HelperController();
         $user = $helperController->createuser($data);
 
-        $staff = Staff::create([
-            'user_id' => $user->id,
-            'position' => $data['position'],
-            'major' => $data['major'],
-            'university' => $data['university'],
-            'graduation_year' => $data['graduation_year'],
-            'salary' => $data['salary'],
-        ]);
+        foreach ($request->students as $student) {
+            $parent = new IsParent;
 
-        $cv = request()->file('cv')->getClientOriginalName();
-        request()->file('cv')->storeAs('/',$staff->user_id . '/' . $cv, '');
-        $staff->update(['cv' =>  $cv]);
+            $parent->parent_id = $user->id;
+            $parent->student_id = $student;
+            $parent->save();
+        }
 
-        $user->assignRole('staff');
 
-        return redirect()->route('admin.staff.index');
+        $user->assignRole('parent');
+
+        return redirect()->route('dashboard.parents.index');
     }
 
     /**
@@ -87,8 +84,9 @@ class StaffController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('id',$id)->with('staff')->first();
-        return view('manage_users.staff.edit', compact('user'));
+        $user = User::where('id',$id)->first();
+        $students = User::role('student')->get();
+        return view('manage_users.parents.edit', compact('user','students'));
 
     }
 
@@ -102,7 +100,6 @@ class StaffController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, User::rules($update = true, $id));
-        $this->validate($request, Staff::rules($update = true));
 
 
         $data = $request->all();
@@ -112,34 +109,18 @@ class StaffController extends Controller
         $helperController = new HelperController();
         $user = $helperController->updateuser($data, $id);
 
-        $staff = Staff::where('user_id',$id)->first();
+        // update parent relation table delete old and add updated
+        IsParent::where('parent_id',$id)->delete();
+        $user = User::where('id',$id)->first();
+        foreach ($request->students as $student) {
+            $parent = new IsParent;
 
-        $staff->update([
-            'position' => $data['position'],
-            'major' => $data['major'],
-            'university' => $data['university'],
-            'graduation_year' => $data['graduation_year'],
-            'salary' => $data['salary'],
-        ]);
-
-        if(request()->hasFile('cv'))
-        {
-            
-            $cv = '/storage/'. $staff->user_id . '/' . $staff->cv;
-            $path = str_replace('\\','/',public_path());
-            
-            if(file_exists($path . $cv))
-            {
-                unlink($path . $cv);
-            }
-
-            $cv = request()->file('cv')->getClientOriginalName();
-            request()->file('cv')->storeAs('/',$staff->user_id . '/' . $cv, '');
-            $staff->update(['cv' =>  $cv]);
-
+            $parent->parent_id = $user->id;
+            $parent->student_id = $student;
+            $parent->save();
         }
 
-        return redirect()->route('admin.staff.index');
+        return redirect()->route('dashboard.parents.index');
 
     }
 
@@ -151,6 +132,7 @@ class StaffController extends Controller
      */
     public function destroy($id)
     {
+
         User::destroy($id);
         
 
@@ -159,8 +141,8 @@ class StaffController extends Controller
 
     public function viewdeleted()
     {
-        $items = User::onlyTrashed()->role('staff')->latest('updated_at')->get();
-        return view('manage_users.staff.deleted', compact('items'));
+        $items = User::onlyTrashed()->role('parent')->latest('updated_at')->get();
+        return view('manage_users.parents.deleted', compact('items'));
     }
 
 }

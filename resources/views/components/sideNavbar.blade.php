@@ -120,8 +120,8 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.roles.index')}}">Roles</a></li>
-                                <li><a href="{{route('admin.permissions.index')}}">Permissions</a></li>
+                                <li><a href="{{route('dashboard.roles.index')}}">Roles</a></li>
+                                <li><a href="{{route('dashboard.permissions.index')}}">Permissions</a></li>
                             </ul>
                         </li>                        
                         @endhasanyrole
@@ -154,8 +154,8 @@
                 
                                 <!--Submenu-->
                                 <ul class="collapse">
-                                    <li><a href="{{route('admin.students.index')}}">All Students</a></li>
-                                    <li><a href="{{route('admin.students.deleted')}}">Deleted Students</a></li>                                  
+                                    <li><a href="{{route('dashboard.students.index')}}">All Students</a></li>
+                                    <li><a href="{{route('dashboard.students.deleted')}}">Deleted Students</a></li>                                  
 
                                     
                                 </ul>
@@ -171,8 +171,8 @@
                 
                                 <!--Submenu-->
                                 <ul class="collapse">
-                                    <li><a href="{{route('admin.parents.index')}}">All Parents</a></li>
-                                    <li><a href="{{route('admin.parents.deleted')}}">Deleted Parents</a></li>                                  
+                                    <li><a href="{{route('dashboard.parents.index')}}">All Parents</a></li>
+                                    <li><a href="{{route('dashboard.parents.deleted')}}">Deleted Parents</a></li>                                  
                                     
                                 </ul>
                             </li>
@@ -187,8 +187,8 @@
                 
                                 <!--Submenu-->
                                 <ul class="collapse">
-                                    <li><a href="{{route('admin.teachers.index')}}">All Teachers</a></li>
-                                    <li><a href="{{route('admin.teachers.deleted')}}">Deleted Teachers</a></li>                                  
+                                    <li><a href="{{route('dashboard.teachers.index')}}">All Teachers</a></li>
+                                    <li><a href="{{route('dashboard.teachers.deleted')}}">Deleted Teachers</a></li>                                  
 
                                 </ul>
                             </li>
@@ -203,8 +203,8 @@
                 
                                 <!--Submenu-->
                                 <ul class="collapse">
-                                    <li><a href="{{route('admin.staff.index')}}">All Staff</a></li> 
-                                    <li><a href="{{route('admin.staff.deleted')}}">Deleted Staff</a></li>                                  
+                                    <li><a href="{{route('dashboard.staff.index')}}">All Staff</a></li> 
+                                    <li><a href="{{route('dashboard.staff.deleted')}}">Deleted Staff</a></li>                                  
                                 
                                 </ul>
                             </li>
@@ -219,8 +219,8 @@
                 
                                 <!--Submenu-->
                                 <ul class="collapse">
-                                    <li><a href="{{route('admin.admins.index')}}">All Admins</a></li>
-                                    <li><a href="{{route('admin.admins.deleted')}}">Deleted Admins</a></li>                                  
+                                    <li><a href="{{route('dashboard.admins.index')}}">All Admins</a></li>
+                                    <li><a href="{{route('dashboard.admins.deleted')}}">Deleted Admins</a></li>                                  
                                 </ul>
                             </li>      
                             <li class="list-divider"></li>
@@ -242,7 +242,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.stages.index')}}">Manage Stages</a></li>                                
+                                <li><a href="{{route('dashboard.stages.index')}}">Manage Stages</a></li>                                
                             </ul>
                         </li>
             
@@ -256,7 +256,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.classes.index')}}">Manage Classes</a></li>
+                                <li><a href="{{route('dashboard.classes.index')}}">Manage Classes</a></li>
                                 
                             </ul>
                         </li>
@@ -271,7 +271,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                <li><a href="{{route('admin.courses.index')}}">Manage Courses</a></li>
+                                <li><a href="{{route('dashboard.courses.index')}}">Manage Courses</a></li>
                                 
                             </ul>
                         </li>
@@ -286,7 +286,7 @@
             
                             <!--Submenu-->
                             <ul class="collapse">
-                                {{-- <li><a href="{{route('admin.attendance.index')}}">Students Attendance</a></li> --}}
+                                <li><a href="{{route('dashboard.attendance.index')}}">Students Attendance</a></li>
                                 {{-- <li><a href="{{route('admin.attendance.index')}}">Staff Attendance</a></li> --}}
                                 {{-- <li><a href="{{route('admin.attendance.create')}}">Take Attendance</a></li> --}}
                             </ul>

@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.roles.store') }}" >
+					<form method="POST" action="{{ route('dashboard.roles.store') }}" >
 						@csrf
 						<div class="panel-body">
 							<div class="row">

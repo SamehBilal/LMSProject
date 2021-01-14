@@ -41,10 +41,6 @@
                 <h3 class="panel-title">Deleted Teachers List</h3>
             </div>
         
-            <div id="demo-custom-toolbar2" class="table-toolbar-left">
-                {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.teachers.create')}}"><i class="demo-pli-plus"></i> Add Teacher</a>
-            </div>
         
             <div class="panel-body">
                 <table id="demo-dt-addrow" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -67,11 +63,11 @@
                                     
                                 </td>
                                 <td>
-                                    <form id="delete_form3" action="{{route('admin.restore', $item->id)}}" method="POST">
+                                    <form id="delete_form3" action="{{route('dashboard.restore', $item->id)}}" method="POST">
                                         @csrf
                                         <button class="btn btn-icon demo-pli-pencil icon-lg add-tooltip demo-bootbox-confirm"></button>
                                     </form>
-                                    <form id="delete_form3" action="{{route('admin.forcedelete', $item->id)}}" method="POST">
+                                    <form id="delete_form3" action="{{route('dashboard.forcedelete', $item->id)}}" method="POST">
                                         @csrf
                                         <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>
                                     </form>

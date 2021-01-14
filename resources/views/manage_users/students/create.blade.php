@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.students.store') }}" enctype="multipart/form-data">
+					<form method="POST" action="{{ route('dashboard.students.store') }}" enctype="multipart/form-data">
 						@csrf
 						<div class="panel-body">
 							@include('manage_users.partials.createuser')

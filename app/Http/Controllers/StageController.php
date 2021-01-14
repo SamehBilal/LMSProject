@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Stage;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class StageController extends Controller
@@ -46,7 +46,7 @@ class StageController extends Controller
             'fees'          => $data['fees'],
         ]);
 
-        return redirect()->route('admin.stages.index');
+        return redirect()->route('dashboard.stages.index');
     }
 
     /**
@@ -91,7 +91,7 @@ class StageController extends Controller
             'fees'          => $data['fees'],
         ]);
 
-        return redirect()->route('admin.stages.index');
+        return redirect()->route('dashboard.stages.index');
     }
 
     /**

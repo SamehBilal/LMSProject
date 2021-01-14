@@ -67,12 +67,11 @@
                                 <td>
                                 </td>
                                 <td>
-                                    {{-- <a href="{{ route('admin.admins.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a> --}}
-                                    <form id="delete_form3" action="{{route('admin.restore', $item->id)}}" method="POST">
+                                    <form id="delete_form3" action="{{route('dashboard.restore', $item->id)}}" method="POST">
                                         @csrf
                                         <button class="btn btn-icon demo-pli-pencil icon-lg add-tooltip demo-bootbox-confirm"></button>
                                     </form>
-                                    <form id="delete_form3" action="{{route('admin.forcedelete', $item->id)}}" method="POST">
+                                    <form id="delete_form3" action="{{route('dashboard.forcedelete', $item->id)}}" method="POST">
                                         @csrf
                                         <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>
                                     </form>

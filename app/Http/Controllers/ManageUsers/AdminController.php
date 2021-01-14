@@ -1,25 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ManageUsers;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Helpers\HelperController;
 use Illuminate\Http\Request;
-use App\User;
-use App\IsParent;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class ParentController extends Controller
+
+class AdminController extends Controller
 {
-   /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $items = User::role('parent')->with('parentTo')->latest('updated_at')->get();
-        return view('manage_users.parents.index', compact('items'));
+        $items = User::role('admin')->latest('updated_at')->get();
+        return view('manage_users.admins.index', compact('items'));
     }
 
     /**
@@ -29,8 +31,7 @@ class ParentController extends Controller
      */
     public function create()
     {
-        $students = User::role('student')->get();
-        return view('manage_users.parents.create', compact('students'));
+        return view('manage_users.admins.create');
     }
 
     /**
@@ -42,25 +43,17 @@ class ParentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, User::rules());
+
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
 
-        //create user
+        //create user data
         $helperController = new HelperController();
         $user = $helperController->createuser($data);
 
-        foreach ($request->students as $student) {
-            $parent = new IsParent;
+        $user->assignRole('admin');
 
-            $parent->parent_id = $user->id;
-            $parent->student_id = $student;
-            $parent->save();
-        }
-
-
-        $user->assignRole('parent');
-
-        return redirect()->route('admin.parents.index');
+        return redirect()->route('dashboard.admins.index');
     }
 
     /**
@@ -82,9 +75,8 @@ class ParentController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('id',$id)->first();
-        $students = User::role('student')->get();
-        return view('manage_users.parents.edit', compact('user','students'));
+        $user = User::find($id);
+        return view('manage_users.admins.edit', compact('user'));
 
     }
 
@@ -99,26 +91,14 @@ class ParentController extends Controller
     {
         $this->validate($request, User::rules($update = true, $id));
 
-
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
-
+        
         //update user data
         $helperController = new HelperController();
         $user = $helperController->updateuser($data, $id);
 
-        // update parent relation table delete old and add updated
-        IsParent::where('parent_id',$id)->delete();
-        $user = User::where('id',$id)->first();
-        foreach ($request->students as $student) {
-            $parent = new IsParent;
-
-            $parent->parent_id = $user->id;
-            $parent->student_id = $student;
-            $parent->save();
-        }
-
-        return redirect()->route('admin.parents.index');
+        return redirect()->route('dashboard.admins.index');
 
     }
 
@@ -131,6 +111,7 @@ class ParentController extends Controller
     public function destroy($id)
     {
 
+
         User::destroy($id);
         
 
@@ -139,8 +120,7 @@ class ParentController extends Controller
 
     public function viewdeleted()
     {
-        $items = User::onlyTrashed()->role('parent')->latest('updated_at')->get();
-        return view('manage_users.parents.deleted', compact('items'));
+        $items = User::onlyTrashed()->role('admin')->latest('updated_at')->get();
+        return view('manage_users.admins.deleted', compact('items'));
     }
-
 }

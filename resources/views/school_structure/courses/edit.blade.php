@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.courses.update', $course->id) }}">
+					<form method="POST" action="{{ route('dashboard.courses.update', $course->id) }}">
                         @csrf
 						@method('PUT')
 						<div class="panel-body">

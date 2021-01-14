@@ -15,14 +15,16 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->boolean('attendance')->default(0);
+            $table->unsignedBigInteger('student_id');
             $table->date('date');
+            $table->set('month', ['January','February','March','April','May','June','July',
+            'August','September','October','November','December']);
             $table->unsignedBigInteger('class_id');
+            $table->boolean('attendance')->default(0);
             $table->longText('notes');
 
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade'); 
             $table->foreign('class_id')->references('id')->on('class_rooms')->onDelete('cascade');
 
             $table->index(['id','class_id','date']);

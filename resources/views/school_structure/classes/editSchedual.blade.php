@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
                     <!--===================================================-->
-                    <form method="POST" action="{{ route('admin.session.update') }}">
+                    <form method="POST" action="{{ route('dashboard.session.update') }}">
                         @method('put')
                         @csrf
                         <input type="hidden" value="{{$class_id}}" name="class_id">
@@ -90,7 +90,7 @@
                                                     @foreach ($courses as $course)
                                                         <option
                                                         @foreach ($sessions as $session)
-                                                        @if ($course->id . '_' . $day . '_' . $start_time[$i] == $session->unique)
+                                                        @if ($course->id . '_' . $day . '_' . $session_time[$i] == $session->unique)
                                                                 selected
                                                             @endif
                                                         @endforeach

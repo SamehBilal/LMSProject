@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.session.store') }}">
+					<form method="POST" action="{{ route('dashboard.session.store') }}">
                         @csrf
                         <input type="hidden" value="{{$class_id}}" name="class_id">
 						<div class="panel-body">

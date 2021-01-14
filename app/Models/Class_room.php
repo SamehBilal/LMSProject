@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Activity;
+use App\Traits\RecordsActivity;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 

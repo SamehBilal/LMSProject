@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.admins.update', $user->id) }}" enctype="multipart/form-data">
+					<form method="POST" action="{{ route('dashboard.admins.update', $user->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 						<div class="panel-body">

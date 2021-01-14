@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.permissions.store') }}" >
+					<form method="POST" action="{{ route('dashboard.permissions.store') }}" >
 						@csrf
 						<div class="panel-body">
 							<div class="row">

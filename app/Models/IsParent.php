@@ -1,24 +1,28 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Activity;
-use Illuminate\Validation\Rule;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 
-class Stage extends Model
+class IsParent extends Model
 {
     use  RecordsActivity;
-    protected $fillable = [
-        'name', 'school_name', 'fees'
-    ];
+    protected $table = 'parents';
 
+    public $timestamps = false;
+
+    protected $fillable = [
+        'parent_id', 'student_id'
+    ];
+    public function user()
+    {
+        return $this->hasOne(User::class , "id" , "student_id");
+    }
     public static function rules($update = false, $id = null)
     {
         $common = [
-            'name'        => "required",
-            'school_name'      => Rule::in(['national','international']),
-            'fees'      => "required",
+
         ];
 
         if ($update) {
@@ -26,7 +30,6 @@ class Stage extends Model
         }
 
         return array_merge($common, [
-
         ]);
     }
 }

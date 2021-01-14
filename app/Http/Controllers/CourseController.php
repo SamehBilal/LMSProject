@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Course;
-use App\Stage;
+use App\Models\Course;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -49,7 +49,7 @@ class CourseController extends Controller
             'stage_id'     => $data['stage_id'],
         ]);
 
-        return redirect()->route('admin.courses.index');
+        return redirect()->route('dashboard.courses.index');
     }
 
     /**
@@ -96,7 +96,7 @@ class CourseController extends Controller
             'stage_id'     => $data['stage_id'],
         ]);
 
-        return redirect()->route('admin.courses.index');
+        return redirect()->route('dashboard.courses.index');
     }
 
     /**

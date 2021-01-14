@@ -73,7 +73,7 @@
 		
 					<!--Block Styled Form -->
 					<!--===================================================-->
-					<form method="POST" action="{{ route('admin.stages.store') }}">
+					<form method="POST" action="{{ route('dashboard.stages.store') }}">
 						@csrf
 						<div class="panel-body">
 							<div class="row">

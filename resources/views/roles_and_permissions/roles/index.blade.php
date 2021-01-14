@@ -43,7 +43,7 @@
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.roles.create')}}"><i class="demo-pli-plus"></i> Add Role</a>
+                <a class="btn btn-primary" href="{{route('dashboard.roles.create')}}"><i class="demo-pli-plus"></i> Add Role</a>
             </div>
         
             <div class="panel-body">

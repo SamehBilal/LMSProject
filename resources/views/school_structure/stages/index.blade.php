@@ -43,7 +43,7 @@
         
             <div id="demo-custom-toolbar2" class="table-toolbar-left">
                 {{-- <button id="demo-dt-addrow-btn" onclick="location.href='" class="btn btn-primary"><i class="demo-pli-plus"></i> Add Admin</button> --}}
-                <a class="btn btn-primary" href="{{route('admin.stages.create')}}"><i class="demo-pli-plus"></i> Add Stage</a>
+                <a class="btn btn-primary" href="{{route('dashboard.stages.create')}}"><i class="demo-pli-plus"></i> Add Stage</a>
             </div>
         
             <div class="panel-body">
@@ -64,8 +64,8 @@
                                 <td>{{number_format($item->fees, 2)}} $</td>
                                 <td>
                                     <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
-                                    <a href="{{ route('admin.stages.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
-                                    <form id="delete_form3" action="{{route('admin.stages.destroy', $item->id)}}" method="POST">
+                                    <a href="{{ route('dashboard.stages.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>
+                                    <form id="delete_form3" action="{{route('dashboard.stages.destroy', $item->id)}}" method="POST">
                                         @csrf
                                         @method('Delete')
                                         <button class="btn btn-icon demo-pli-trash icon-lg add-tooltip demo-bootbox-confirm"></button>

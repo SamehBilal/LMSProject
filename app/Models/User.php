@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Helpers;
 
-use App\User;
-use App\Staff;
-use App\Student;
-use App\IsParent;
+use App\Models\User;
+use App\Models\Staff;
+use App\Models\Student;
+use App\Models\IsParent;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class HelperController extends Controller
 {

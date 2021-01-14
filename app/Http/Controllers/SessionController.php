@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Course;
-use App\Session;
-use App\Attendance;
+use App\Models\Course;
+use App\Models\Session;
+use App\Models\Attendance;
+use App\Models\SessionTime;
 use Illuminate\Http\Request;
 
 class SessionController extends Controller
@@ -14,6 +15,9 @@ class SessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $days = ['saterday','sunday','monday','tuesday','wednesday','thursday'];
+
+    
     public function index()
     {
         //
@@ -27,7 +31,7 @@ class SessionController extends Controller
     public function create($id)
     {
         $class_id = $id;
-        $days =  ['saterday','sunday','monday','tuesday','wednesday','thursday'];
+        $days =  $this->days;
 
         $courses = Course::all();
 
@@ -42,8 +46,8 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        $start_time = ['','09:00','10:00','11:00','12:00','13:00','14:00'];
-        $end_time   = ['','10:00','11:00','12:00','13:00','14:00','15:00'];
+        $session_time = SessionTime::all()->pluck('id');
+
         $data = $request->except('_token','class_id');
         foreach ($data as $key => $value) {
             
@@ -52,11 +56,10 @@ class SessionController extends Controller
                     'class_id'  => $request->class_id,
                     'course_id' => $value,
                     'day'       => $arr[0],
-                    'start'     => $start_time[$arr[1]],
-                    'end'       => $end_time[$arr[1]],
+                    'session_time_id'   => $session_time[$arr[1] - 1]
                 ]);
         }
-        return redirect()->route('admin.classes.index');
+        return redirect()->route('dashboard.classes.index');
     }
 
     /**
@@ -79,15 +82,14 @@ class SessionController extends Controller
     public function edit($id)
     {
         $class_id = $id;
-        $days =  ['saterday','sunday','monday','tuesday','wednesday','thursday'];
-        $start_time = ['09:00:00','10:00:00','11:00:00','12:00:00','13:00:00','14:00:00'];
-
+        $days =  $this->days;
+        $session_time = SessionTime::all()->pluck('id');
         $courses = Course::all();
         $sessions = Session::where('class_id',$class_id)->get();
         foreach ($sessions as $session) {
-            $session->unique = $session->course_id . '_' . $session->day . '_' . $session->start;
+            $session->unique = $session->course_id . '_' . $session->day . '_' . $session->session_time_id;
         }
-        return view('school_structure.classes.editSchedual', compact('class_id','days','courses','sessions','start_time'));
+        return view('school_structure.classes.editSchedual', compact('class_id','days','courses','sessions','session_time'));
     }
 
     /**
@@ -99,10 +101,9 @@ class SessionController extends Controller
      */
     public function update(Request $request)
     {
-        $class_room = Session::where('class_id',$request->class_id)->delete();
+        Session::where('class_id',$request->class_id)->delete();
+        $session_time = SessionTime::all()->pluck('id');
 
-        $start_time = ['','09:00','10:00','11:00','12:00','13:00','14:00'];
-        $end_time   = ['','10:00','11:00','12:00','13:00','14:00','15:00'];
         $data = $request->except('_token','class_id','_method');
         foreach ($data as $key => $value) {
             
@@ -111,11 +112,10 @@ class SessionController extends Controller
                     'class_id'  => $request->class_id,
                     'course_id' => $value,
                     'day'       => $arr[0],
-                    'start'     => $start_time[$arr[1]],
-                    'end'       => $end_time[$arr[1]],
+                    'session_time_id'   => $session_time[$arr[1] - 1]
                 ]);
         }
-        return redirect()->route('admin.classes.index');
+        return redirect()->route('dashboard.classes.index');
     }
 
     /**
