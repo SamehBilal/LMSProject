@@ -61,11 +61,11 @@
                     <tbody>
                         @foreach ($items as $item)
                             <tr>
-                                <td>{{$item->fullname}}</td>
-                                <td>{{$item->student->serial}}</td>
-                                <td>{{($item->student->stage_id)}}</td>
-                                <td>{{($item->student->class_id)}}</td>
-                                <td>{{($item->student->status)}}</td>
+                                <td>{{$item->user->fullname}}</td>
+                                <td>{{$item->serial}}</td>
+                                <td>{{($item->stage->name)}}</td>
+                                <td>{{($item->class->name)}}</td>
+                                <td>{{($item->status)}}</td>
                                 <td>
                                     <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>
                                     <a href="{{ route('dashboard.students.edit', $item->id) }}" class="btn btn-icon demo-pli-pencil icon-lg add-tooltip" data-original-title="Edit" data-container="body"></a>

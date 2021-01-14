@@ -20,7 +20,7 @@ class ParentController extends Controller
      */
     public function index()
     {
-        $items = User::role('parent')->with('parentTo')->latest('updated_at')->get();
+        $items = User::role('parent')->with('parentTo.user.student.class')->latest('updated_at')->get();
         return view('manage_users.parents.index', compact('items'));
     }
 

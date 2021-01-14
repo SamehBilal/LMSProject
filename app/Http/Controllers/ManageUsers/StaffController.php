@@ -20,7 +20,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $items = User::role('staff')->latest('updated_at')->get();
+        $items = User::role('staff')->with('staff','permissions','roles')->latest('updated_at')->get();
         return view('manage_users.staff.index', compact('items'));
     }
 

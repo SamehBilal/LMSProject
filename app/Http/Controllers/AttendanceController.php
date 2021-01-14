@@ -18,34 +18,44 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
+
         $records = null;
         $classes = Class_room::all();
-        $count = 0;
+        $daysInMonth = $students = 0;
 
         if($request->filled(['class', 'month'])) {
 
+            /**
+             * get number of days in selected month.
+             */
+            $currentmonth = \Carbon\Carbon::parse($request->input('month'));
+            $daysInMonth = $currentmonth->daysInMonth;
+
             $class = Class_room::where('name',$request->input('class'))->first();
             $month = $request->input('month');
-            $updatedrecords = [];
+            $arr = [];
+
+            /**
+            * get each student records in month and group data by student_id.
+            */
             $records = Attendance::where('class_id',$class->id)
                                  ->where('month',$month)
                                  ->get()
                                  ->groupBy('student_id');
-            dd($records);
+
             foreach($records as $key => $record){
-                $student = Student::find($key);
-                $value = $student->user->fullname;
-                $arr[] = $value;
+                foreach($record as $anotherrecord){
+                    $anotherrecord->daynumber = \Carbon\Carbon::parse($anotherrecord->date)->day;
+                }
+                $arr[] = $key;
             }
+            /**
+            * get students names.
+            */
+            $students = Student::whereIn('id',$arr)->get();
 
-            $count = count($records);
         }
-        return view('attendance.index',compact('records','classes','count'));
-
-        // $request->merge([
-        //     'user_id' => auth()->id()
-        // ]);
-
+        return view('attendance.index',compact('daysInMonth','students','records','classes'));
     }
 
     /**

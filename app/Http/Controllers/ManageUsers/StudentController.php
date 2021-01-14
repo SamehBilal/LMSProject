@@ -22,7 +22,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $items = User::role('student')->with('student')->latest('updated_at')->get();
+        $items = Student::with('user','class','stage')->latest('updated_at')->get();
         return view('manage_users.students.index', compact('items'));
     }
 
@@ -93,7 +93,8 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('id',$id)->with('student')->first();
+        $student = Student::findOrFail($id);
+        $user = User::where('id',$student->user_id)->with('student')->first();
         $classes = Class_room::all();
         $stages  = Stage::all();
         return view('manage_users.students.edit', compact('user','classes','stages'));
@@ -159,7 +160,9 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $student = Student::findOrFail($id);
+
+        User::destroy($student->id);
         
 
         return back();

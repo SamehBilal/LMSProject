@@ -66,6 +66,9 @@
                                     @endforeach
                                 </td>
                                 <td>
+                                    @foreach ($item->parentTo as $student)
+                                    <span class="label label-table label-dark">{{$student->user->student->class->name}}</span>                                        
+                                    @endforeach
                                 </td>
                                 <td>
                                     <a href="" class="btn btn-icon demo-pli-male icon-lg add-tooltip" data-original-title="View" data-container="body"></a>

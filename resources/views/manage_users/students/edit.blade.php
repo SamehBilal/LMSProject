@@ -97,8 +97,9 @@
 									<div class="form-group">
 										<label class="control-label">Stage</label>
 										<select name="stage_id" class="form-control" required>
-											<option @if ($user->student->stage_id == '1') selected @endif value="1">stage 1</option>
-											<option @if ($user->student->stage_id == '2') selected @endif value="2">stage 2</option>
+											@foreach ($stages as $stage)
+												<option @if ($user->student->stage_id == $stage->id) selected @endif value="{{$stage->id}}">{{$stage->name}}</option>
+											@endforeach
 										</select>									
 									</div>
 									@error('stage_id')
@@ -112,8 +113,9 @@
 									<div class="form-group">
 										<label class="control-label">Class</label>
 										<select name="class_id" class="form-control" required>
-											<option @if ($user->student->class_id == '1') selected @endif value="1">class 1</option>
-											<option @if ($user->student->class_id == '2') selected @endif value="2">class 2</option>
+											@foreach ($classes as $class)
+												<option @if ($user->student->class_id == $class->id) selected @endif value="{{$class->id}}">{{$class->name}}</option>
+											@endforeach
 										</select>									
 									</div>
 									@error('class_id')

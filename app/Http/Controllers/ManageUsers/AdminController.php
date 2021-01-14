@@ -20,7 +20,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $items = User::role('admin')->latest('updated_at')->get();
+        $items = User::role('admin')->with('permissions','roles')->latest('updated_at')->get();
         return view('manage_users.admins.index', compact('items'));
     }
 

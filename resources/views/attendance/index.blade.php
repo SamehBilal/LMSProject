@@ -107,77 +107,43 @@
                                             <thead>
                                                 <tr>
                                                     <th class="text-left">Students</th>
-                                                    <th>1</th>
-                                                    <th>2</th>
-                                                    <th>3</th>
-                                                    <th>4</th>
-                                                    <th>5</th>
-                                                    <th>6</th>
-                                                    <th>7</th>
-                                                    <th>8</th>
-                                                    <th>9</th>
-                                                    <th>10</th>
-                                                    <th>11</th>
-                                                    <th>12</th>
-                                                    <th>13</th>
-                                                    <th>14</th>
-                                                    <th>15</th>
-                                                    <th>16</th>
-                                                    <th>17</th>
-                                                    <th>18</th>
-                                                    <th>19</th>
-                                                    <th>20</th>
-                                                    <th>21</th>
-                                                    <th>22</th>
-                                                    <th>23</th>
-                                                    <th>24</th>
-                                                    <th>25</th>
-                                                    <th>26</th>
-                                                    <th>27</th>
-                                                    <th>28</th>
-                                                    <th>29</th>
-                                                    <th>30</th>
-                                                    <th>31</th>
+                                                    @for ($i = 1; $i <= $daysInMonth; $i++)
+                                                        <th>{{$i}}</th>
+                                                    @endfor
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @php $counter = 0; @endphp
                                                 @foreach ($records as $key => $record)
                                                 <tr>
                                                     
-                                                        <td class="text-left">{{$key}}</td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-times text-danger"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td>-</td>
-                                                        <td><i class="fa fa-times text-danger"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-times text-danger"></i></td>
-                                                        <td>-</td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-times text-danger"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td>-</td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-times text-danger"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td>-</td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td><i class="fa fa-check text-success"></i></td>
-                                                        <td>-</td>
+                                                        <td class="text-left">
+                                                            @foreach ($students as $student)
+                                                                @if ($student->id == $key)
+                                                                    {{$student->user->fullname}}
+                                                                @endif
+                                                            @endforeach
+                                                        </td>
+                                                        @for ($i = 1; $i <= $daysInMonth; $i++)
 
-                                                    
+                                                            <td>
+                                                                @foreach ($record as $data)
+                                                                @if ($data->daynumber == $i)
+                                                                    @php $counter++ @endphp
+                                                                    @if ($data->attendance == 1)
+                                                                        <i class="fa fa-check text-success"></i>
+                                                                    @else
+                                                                        <i class="fa fa-times text-danger"></i>
+                                                                    @endif                                                              
+                                                                @endif
+                                                                @endforeach
+                                                                @if ($counter == 1)
+                                                                    @php $counter-- @endphp
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                        @endfor                                                    
                                                 </tr>
                                                 @endforeach
 

@@ -16,7 +16,7 @@ class ClassRoomController extends Controller
      */
     public function index()
     {
-        $items = Class_room::all();
+        $items = Class_room::with('stage')->get();
         return view('school_structure.classes.index', compact('items'));
     }
 
