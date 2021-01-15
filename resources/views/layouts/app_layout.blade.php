@@ -42,6 +42,9 @@
     <!--Demo [ DEMONSTRATION ]-->
     <link href="{{asset('css/demo/nifty-demo.min.css')}}" rel="stylesheet">
 
+    <!--Animate.css [ OPTIONAL ] -- modified -->
+    <link href="{{ asset('plugins/animate-css/animate.min.css') }}" rel="stylesheet">
+
     @yield('extra-header-scripts')
             
     <!--=================================================
@@ -164,6 +167,49 @@
 
     <!--Specify page [ SAMPLE ]-->
     <script src="{{asset('js/demo/dashboard.js')}}"></script>
+
+    <!--Alerts [ SAMPLE ] -- modified -->
+    <script src="{{ asset('js/demo/ui-alerts.js') }}"></script>
+    
+    <!--Session, Messages & Errors -- modified -->
+    <script>
+        @if (session('status'))
+        $.niftyNoty({
+            type: 'warning',
+            icon: "demo-psi-gear icon-2x",
+            container : '#content-container',
+            title : '{{ session('status') }}',
+            message : '',
+            closeBtn : true,
+        });
+        @endif
+        @if($message = \Illuminate\Support\Facades\Session::get('success'))
+        $.niftyNoty({
+            type: "success",
+            icon: "ti-check icon-2x",
+            focus: true,
+            container : "floating",
+            title : 'Great!',
+            message : "{{$message}}",
+            closeBtn : true,
+            timer : 3000,
+        });
+        @endif
+        @if($errors->any())
+        $.niftyNoty({
+            type: "danger",
+            icon: "ti-close icon-2x",
+            focus: true,
+            container : "floating",
+            title : 'Opps!',
+            message : '@foreach($errors->all() as $error)\n' +
+                '        <span> {{$error}} </span> \n' +
+                '        @endforeach',
+            closeBtn : true,
+            timer : 3000,
+        });
+        @endif
+    </script>
 
     @yield('extra-body-scripts')
     
